@@ -1,0 +1,6 @@
+@Randevuburada.WebApi_HostAddress = http://localhost:5261
+
+GET {{Randevuburada.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
