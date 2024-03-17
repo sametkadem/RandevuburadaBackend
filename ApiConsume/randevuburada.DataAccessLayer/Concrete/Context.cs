@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using randevuburada.EntityLayer.Concrete.CustomerConcrete;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
+using randevuburada.EntityLayer.Concrete.Other;
+using randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff;
+using randevuburada.EntityLayer.Concrete.CompanyConcrete.Service;
 
 namespace randevuburada.DataAccessLayer.Concrete
 {
@@ -19,7 +22,12 @@ namespace randevuburada.DataAccessLayer.Concrete
       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //optionsBuilder.UseSqlServer("Server=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;Persist Security Info=False;User ID=master;Password=smtKDM110*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
             optionsBuilder.UseSqlServer("Server=samet\\SQLEXPRESS;initial catalog=randevuburadaDb;integrated security=true;TrustServerCertificate=True;");
+            //Data Source=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;User Id=master@randevuburada;Password=smtKDM110*
+            //            optionsBuilder.UseSqlServer("Server=samet\\SQLEXPRESS;initial catalog=randevuburadaDb;integrated security=true;TrustServerCertificate=True;");
+            //            optionsBuilder.UseSqlServer("Server=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;Persist Security Info=False;User ID=master;Password=smtKDM110*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,7 +59,28 @@ namespace randevuburada.DataAccessLayer.Concrete
         public DbSet<CompanyPackage> CompanyPackages { get; set; }
         public DbSet<CompanyType> CompanyTypes { get; set; }
 
+        public DbSet<CompanyOwnerInfo> CompanyOwnerInfos { get; set; }
+        public DbSet<CompanySubscribe> CompanySubscribes { get; set; }
 
+        public DbSet<Day> Days { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+        
+        public DbSet<CompanyWorkingHours> CompanyWorkingHours { get; set;}
+        public DbSet<CompanyStaff> CompanyStaffs { get; set;}
+        public DbSet<CompanyService> CompanyServices { get; set; }
+
+        public DbSet<StaffWorkingStatus> StaffWorkingStatus { get; set; }
+        public DbSet<StaffWorkingHours> StaffWorkingHours { get; set; }
+        public DbSet<StaffWorkingPosition> StaffWorkingPosition { get; set; }
+
+        public DbSet<ServiceStaff> ServiceStaff { get; set; }
+        public DbSet<ServiceIntervalHours> ServiceIntervalHours { get; set; }
+        public DbSet<StaffWorkingPosition> StaffWorkingPositions { get; set; }
+
+        public DbSet<MediaType> MediaType { get; set; }
+        public DbSet<CompanyMedia> CompanyMedia { get; set; }
+
+        public DbSet<CompanySocialMedia> CompanySocialMedia { get; set;}
 
     }
 }

@@ -133,26 +133,53 @@ namespace randevuburada.DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppUserId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CompanyAbout")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CompanyBankingDetailsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyPackageId")
-                        .HasColumnType("int");
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CompanyPackagesId")
-                        .HasColumnType("int");
+                    b.Property<bool>("CompanyStatus")
+                        .HasColumnType("bit");
 
                     b.Property<int>("CompanyTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CompanyVisibility")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Latitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -160,15 +187,23 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Website")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("CityId");
 
                     b.HasIndex("CompanyBankingDetailsId");
 
-                    b.HasIndex("CompanyPackageId");
-
                     b.HasIndex("CompanyTypeId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Companies");
                 });
@@ -223,9 +258,109 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("CompanyBankingDetails");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyMedia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MediaPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MediaTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("MediaTypeId");
+
+                    b.ToTable("CompanyMedia");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyOwnerInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CompanyOwnerInfos");
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyPackage", b =>
@@ -257,6 +392,195 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.ToTable("CompanyPackages");
                 });
 
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MainServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ServiceDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServiceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("GenderId");
+
+                    b.HasIndex("MainServiceId");
+
+                    b.ToTable("CompanyServices");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanySocialMedia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Facebook")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Instagram")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkedIn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Twitter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("WhatsApp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("YouTube")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("CompanySocialMedia");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyStaff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilPicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StaffWorkingPositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StaffWorkingStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("StaffWorkingPositionId");
+
+                    b.HasIndex("StaffWorkingStatusId");
+
+                    b.ToTable("CompanyStaffs");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanySubscribe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("companyPackageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("companyPackageId");
+
+                    b.ToTable("CompanySubscribes");
+                });
+
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyType", b =>
                 {
                     b.Property<int>("Id")
@@ -272,6 +596,182 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CompanyTypes");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyWorkingHours", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CloseTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OpenTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("DayId");
+
+                    b.ToTable("CompanyWorkingHours");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Service.MainService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ServiceDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServiceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MainService");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Service.ServiceIntervalHours", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeOnly>("intervalTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceIntervalHours");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Service.ServiceStaff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompanyServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("CompanyServiceId");
+
+                    b.ToTable("ServiceStaff");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff.StaffWorkingHours", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CompanyStaffId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DayId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDateBreak")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDateBreak")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyStaffId");
+
+                    b.HasIndex("DayId");
+
+                    b.ToTable("StaffWorkingHours");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff.StaffWorkingPosition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PositionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StaffWorkingPosition");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff.StaffWorkingStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StaffWorkingStatus");
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CustomerConcrete.Customer", b =>
@@ -392,14 +892,6 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -512,6 +1004,57 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.ToTable("Districts");
                 });
 
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.Other.Day", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Days");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.Other.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GenderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genders");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.Other.MediaType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("MediaTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MediaType");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("randevuburada.EntityLayer.Concrete.Identity.AppRole", null)
@@ -565,9 +1108,9 @@ namespace randevuburada.DataAccessLayer.Migrations
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", b =>
                 {
-                    b.HasOne("randevuburada.EntityLayer.Concrete.Identity.AppUser", "AppUser")
-                        .WithMany("Companies")
-                        .HasForeignKey("AppUserId")
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Location.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -577,25 +1120,247 @@ namespace randevuburada.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyPackage", "CompanyPackage")
-                        .WithMany("Companies")
-                        .HasForeignKey("CompanyPackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyType", "CompanyType")
                         .WithMany("Companies")
                         .HasForeignKey("CompanyTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Location.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Location.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Identity.AppUser", "User")
+                        .WithMany("Companies")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
 
                     b.Navigation("CompanyBankingDetails");
 
-                    b.Navigation("CompanyPackage");
-
                     b.Navigation("CompanyType");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("District");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyBankingDetails", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyMedia", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Other.MediaType", "MediaType")
+                        .WithMany()
+                        .HasForeignKey("MediaTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("MediaType");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyOwnerInfo", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Location.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Location.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Location.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("District");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyService", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Other.Gender", "Gender")
+                        .WithMany()
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Service.MainService", "MainService")
+                        .WithMany()
+                        .HasForeignKey("MainServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Gender");
+
+                    b.Navigation("MainService");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanySocialMedia", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyStaff", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff.StaffWorkingPosition", "StaffWorkingPosition")
+                        .WithMany()
+                        .HasForeignKey("StaffWorkingPositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff.StaffWorkingStatus", "StaffWorkingStatus")
+                        .WithMany()
+                        .HasForeignKey("StaffWorkingStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("StaffWorkingPosition");
+
+                    b.Navigation("StaffWorkingStatus");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanySubscribe", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyPackage", "Package")
+                        .WithMany()
+                        .HasForeignKey("companyPackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Package");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyWorkingHours", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Other.Day", "Day")
+                        .WithMany()
+                        .HasForeignKey("DayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Day");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Service.ServiceStaff", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyService", "CompanyService")
+                        .WithMany()
+                        .HasForeignKey("CompanyServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("CompanyService");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff.StaffWorkingHours", b =>
+                {
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyStaff", "CompanyStaff")
+                        .WithMany()
+                        .HasForeignKey("CompanyStaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.Other.Day", "Day")
+                        .WithMany()
+                        .HasForeignKey("DayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyStaff");
+
+                    b.Navigation("Day");
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CustomerConcrete.Customer", b =>
@@ -664,11 +1429,6 @@ namespace randevuburada.DataAccessLayer.Migrations
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyBankingDetails", b =>
-                {
-                    b.Navigation("Companies");
-                });
-
-            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyPackage", b =>
                 {
                     b.Navigation("Companies");
                 });

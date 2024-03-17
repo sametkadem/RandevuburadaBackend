@@ -15,5 +15,17 @@ namespace randevuburada.DataAccessLayer.EntityFramework
         public EfCompanyBankingDetailsDal(Context context) : base(context)
         {
         }
+
+        public IEnumerable<CompanyBankingDetails> GetByUserID(int userId)
+        {
+            var context = new Context();
+            return context.CompanyBankingDetails.Where(x => x.UserId == userId).ToList();
+        }
+
+        public int GetCountCompanyByUserId(int userId)
+        {
+            var context = new Context();
+            return context.CompanyBankingDetails.Count(x => x.UserId == userId);
+        }
     }
 }

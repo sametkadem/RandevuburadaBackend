@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/RandevuburadaWebApi/apis/RandevuburadaWebApiMangement",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/RandevuburadaWebAp/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsrandevuburadaDb_C6318F3E00",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/randevuburada/databases/Randevuburada.WebApi_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:randevuburadaDb",
+      "dynamicId": null
+    }
+  }
+}

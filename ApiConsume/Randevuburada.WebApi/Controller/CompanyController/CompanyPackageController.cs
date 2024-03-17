@@ -7,7 +7,7 @@ using randevuburada.BusinessLayer.Abstract;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 namespace Randevuburada.WebApi.Controller.CompanyController
 {
-    [Route("api/admin")]
+    [Route("api/v1/")]
     [ApiController]
     public class CompanyPackageController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpPost]
-        [Route("add/package")]
+        [Route("admin/add/package")]
         public IActionResult SetCompanyPackage(CompanyPackageAddDto companyPackageAddDto)
         {
             if (!ModelState.IsValid)
@@ -36,11 +36,16 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpGet]
-        [Route("get/package")]
+        [Route("company/package")]
         public IActionResult GetCompanyPackage()
         {
             var companyPackage = _companyPackageService.TGetList();
-            return Ok(companyPackage);
+            var returnData = new
+            {
+                status = "success",
+                data = companyPackage,
+            };
+            return Ok(returnData);
         }
     }
 }

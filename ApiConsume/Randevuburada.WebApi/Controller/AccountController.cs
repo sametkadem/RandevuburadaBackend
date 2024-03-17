@@ -11,7 +11,7 @@ using Randevuburada.WebApi.Model.AuthenticationModel;
 
 namespace Randevuburada.WebApi.Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace Randevuburada.WebApi.Controller
         }
 
         [HttpPost]
-        [Route("Register")]
+        [Route("account/register")]
         public async Task<IActionResult> Register(CreateNewUserDto model)
         {
             if (!ModelState.IsValid)
@@ -37,8 +37,6 @@ namespace Randevuburada.WebApi.Controller
 
             var appUser = new AppUser
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
                 UserName = model.UserName,
                 Email = model.Email,
             };
@@ -60,7 +58,7 @@ namespace Randevuburada.WebApi.Controller
         }
 
         [HttpPost]
-        [Route("Login")]
+        [Route("account/customer/login")]
         public async Task<IActionResult> Login(LoginUserDto model)
         {
             if (ModelState.IsValid)
@@ -70,8 +68,58 @@ namespace Randevuburada.WebApi.Controller
                 {
                     var tokenGenerator = new Token(_configuration);
                     var jwtToken = tokenGenerator.Create();
+                    var user = await _userManager.FindByNameAsync(model.UserName);
 
-                    return Ok(jwtToken);
+                    var returnData = new
+                    {
+                        status = 200,
+                        data = new
+                        {
+                            token = jwtToken,
+                            user = new
+                            {
+                                userType = "Customer",
+                                userId = user.Id,
+                                email = user.Email,
+                                userName = user.UserName
+                            }
+                        },
+                    };
+                    return Ok(returnData);
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Giriş başarısız");
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost]
+        [Route("account/company/login")]
+        public async Task<IActionResult> LoginCompany(LoginUserDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    var tokenGenerator = new Token(_configuration);
+                    var jwtToken = tokenGenerator.CreateComponyToken();
+                    var user = await _userManager.FindByNameAsync(model.UserName);
+
+                    var returnData = new
+                    {
+                        status = 200,
+                        data = new {
+                            token = jwtToken,
+                            user = new
+                            {
+                                userType = "Company",
+                                userId = user.Id,
+                                email = user.Email,
+                                userName = user.UserName
+                            }
+                        }, 
+                    };
+                    return Ok(returnData);
                 }
             }
             ModelState.AddModelError(string.Empty, "Giriş başarısız");
@@ -79,7 +127,7 @@ namespace Randevuburada.WebApi.Controller
         }
 
         [HttpGet]
-        [Route("Logout")]
+        [Route("account/logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -87,7 +135,7 @@ namespace Randevuburada.WebApi.Controller
         }
 
         [HttpGet]
-        [Route("GetUser")]
+        [Route("account/getUser")]
         public async Task<IActionResult> GetUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -100,7 +148,7 @@ namespace Randevuburada.WebApi.Controller
 
         [HttpGet]
         [Authorize]
-        [Route("GetUserId")]
+        [Route("account/getUserId")]
         public async Task<IActionResult> GetUserId()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);

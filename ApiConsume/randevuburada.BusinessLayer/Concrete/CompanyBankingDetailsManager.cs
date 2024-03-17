@@ -42,5 +42,15 @@ namespace randevuburada.BusinessLayer.Concrete
         {
             _companyBankingDetailsDal.Update(t);
         }
+
+        public IEnumerable<CompanyBankingDetails> TGetByUserID(int userId)
+        {
+            return _companyBankingDetailsDal.GetByUserID(userId);
+        }
+
+        public int TGetCountCompanyByUserId(int userId)
+        {
+            return _companyBankingDetailsDal.GetCountCompanyByUserId(userId);
+        }
     }
 }

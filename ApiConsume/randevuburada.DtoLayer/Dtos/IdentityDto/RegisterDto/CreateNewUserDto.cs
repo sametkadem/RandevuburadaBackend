@@ -9,12 +9,7 @@ namespace randevuburada.DtoLayer.Dtos.IdentityDto.RegisterDto
 {
     public class CreateNewUserDto
     {
-        [Required(ErrorMessage = "Ad alanı boş geçilemez")]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessage = "Soyad alanı boş geçilemez")]
-        public string LastName { get; set; }
-
+     
         [Required(ErrorMessage = "Kullanıcı adı alanı boş geçilemez")]
         public string UserName { get; set; }
 

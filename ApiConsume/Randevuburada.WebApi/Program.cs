@@ -47,6 +47,43 @@ builder.Services.AddScoped<ICompanyBankingDetailsService, CompanyBankingDetailsM
 builder.Services.AddScoped<ICompanyTypeDal, EfCompanyTypeDal>();
 builder.Services.AddScoped<ICompanyTypeService, CompanyTypeManager>();
 
+builder.Services.AddScoped<ICompanySubscribeDal, EfCompanySubscribeDal>();
+builder.Services.AddScoped<ICompanySubscribeService, CompanySubscribeManager>();
+
+builder.Services.AddScoped<ICompanyOwnerInfoDal, EfCompanyOwnerInfoDal>();
+builder.Services.AddScoped<ICompanyOwnerInfoService, CompanyOwnerInfoManager>();
+
+builder.Services.AddScoped<IDayDal, EfDayDal>();
+builder.Services.AddScoped<IDayService, DayManager>();
+
+builder.Services.AddScoped<IGenderDal, EfGenderDal>();
+builder.Services.AddScoped<IGenderService, GenderManager>();
+
+builder.Services.AddScoped<IMediaTypeDal, EfMediaTypeDal>();
+builder.Services.AddScoped<IMediaTypeService, MediaTypeManager>();
+
+builder.Services.AddScoped<IMainServiceDal, EfMainServiceDal>();
+builder.Services.AddScoped<IMainServiceService, MainServiceManager>();
+
+builder.Services.AddScoped<IServiceIntervalHoursDal, EfServiceIntervalHoursDal>();
+builder.Services.AddScoped<IServiceIntervalHoursService, ServiceIntervalHoursManager>();
+
+builder.Services.AddScoped<IStaffWorkingHoursDal, EfStaffWorkingHoursDal>();
+builder.Services.AddScoped<IStaffWorkingHoursService, StaffWorkingHoursManager>();
+
+builder.Services.AddScoped<IStaffWorkingPositionDal, EfStaffWorkingPositionDal>();
+builder.Services.AddScoped<IStaffWorkingPositionService, StaffWorkingPositionManager>();
+
+builder.Services.AddScoped<ICompanyStaffDal, EfCompanyStaffDal>();
+builder.Services.AddScoped<ICompanyStaffService, CompanyStaffManager>();
+
+builder.Services.AddScoped<ICompanyServiceDal, EfCompanyServiceDal>();
+builder.Services.AddScoped<ICompanyServiceService, CompanyServiceManager>();
+
+builder.Services.AddScoped<ICompanyWorkingHoursDal, EfCompanyWorkingHoursDal>();
+builder.Services.AddScoped<ICompanyWorkingHoursService, CompanyWorkingHoursManager>();
+
+
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<AppUser, AppRole>()
@@ -79,11 +116,15 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
+/*
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+*/
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseRouting();
 

@@ -1,5 +1,6 @@
 ﻿using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using randevuburada.EntityLayer.Concrete.Identity;
+using randevuburada.EntityLayer.Concrete.Location;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,19 +12,47 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto
 {
     public class CompanyAddDto
     {
-        [Required(ErrorMessage = "İşletme Tipi Gereklidir : CompanyTypeId")]
+        [Required(ErrorMessage = "İşletme türü gereklidir.")]
         public int CompanyTypeId { get; set; }
 
-        [Required(ErrorMessage = "Paket Gereklidir : CompanyPackagesId")]
-        public int CompanyPackagesId { get; set; }
-
-        [Required(ErrorMessage = "Banka Detayı Gereklidir : CompanyBankingDetailsId")]
+        [Required(ErrorMessage = "Banka detayı gereklidir.")]
         public int CompanyBankingDetailsId { get; set; }
-
-        [Required(ErrorMessage = "Son Kullanma Tarihi Gereklidir : ExpirationDate")]
-        public DateTime ExpirationDate { get; set; }
 
         [Required(ErrorMessage = "Kullanıcı Gereklidir : UserId")]
         public int UserId { get; set; }
+
+        [Required(ErrorMessage = "İşletme adı gereklidir.")]
+        public string CompanyName { get; set; }
+        
+        [Required(ErrorMessage = "İşletme telefon numarası gereklidir.")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "Telefon numarası 11 haneli olmalıdır.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Telefon numarası yalnızca rakamlardan oluşmalıdır.")] 
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Email alanı boş geçilemez")]
+        [EmailAddress(ErrorMessage = "Geçerli bir email adresi giriniz")]
+        public string Email { get; set; }
+
+        [Url(ErrorMessage = "Geçerli bir website adresi giriniz")]
+        public string Website { get; set; }
+
+        [Required(ErrorMessage = "Ülke alanı boş geçilemez")]
+        [Range(1, 1, ErrorMessage = "Geçerli bir CountryId giriniz")]
+        public int CountryId { get; set; }
+
+        [Required(ErrorMessage = "Şehir alanı boş geçilemez")]
+        [Range(1, 81, ErrorMessage = "Geçerli bir CityId giriniz")]
+        public int CityId { get; set; }
+
+        [Required(ErrorMessage = "İlçe alanı boş geçilemez")]
+        [Range(1, 39, ErrorMessage = "Geçerli bir DistrictId giriniz")]
+        public int DistrictId { get; set; }
+
+        [RegularExpression(@"^-?\d+(\.\d+)?$", ErrorMessage = "Geçerli bir Latitude giriniz")]
+        public string Latitude { get; set; }
+
+        [RegularExpression(@"^-?\d+(\.\d+)?$", ErrorMessage = "Geçerli bir Longitude giriniz")]
+        public string Longitude { get; set; }
+        public string CompanyAbout { get; set; }
     }
 }

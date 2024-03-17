@@ -10,5 +10,8 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface ICompanyDal : IGenericDal<Company>
     {
+        public int GetCountCompanyByUserId(int userId);
+        public IEnumerable<Company> GetByUserID(int userId);
+        public IEnumerable<Company> GetCountryCityDistrictCompany(int countryId, int cityId, int districtId);
     }
 }

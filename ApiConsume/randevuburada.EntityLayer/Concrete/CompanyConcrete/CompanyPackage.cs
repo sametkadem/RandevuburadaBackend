@@ -14,7 +14,5 @@ namespace randevuburada.EntityLayer.Concrete.CompanyConcrete
         public int PackageDay { get; set; }
         public int MaxBranch { get; set; }
         public int PackagePrice { get; set; }
-
-        public ICollection<Company> Companies { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using randevuburada.EntityLayer.Concrete.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,8 @@ namespace randevuburada.EntityLayer.Concrete.CompanyConcrete
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
-
+        public int UserId { get; set; }
+        public required AppUser User { get; set; }
         public ICollection<Company> Companies { get; set; }
 
     }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Randevuburada.WebApi.Controller.Customer
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/customer")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace Randevuburada.WebApi.Controller.Customer
 
 
         [HttpPost]
-        [Route("addCustomerInfo")]
+        [Route("set/info")]
         [Authorize]
         public async Task<IActionResult> AddCustomer(CustomerAddDto customerAddDto)
         {
@@ -60,7 +60,7 @@ namespace Randevuburada.WebApi.Controller.Customer
         }
 
         [HttpPost]
-        [Route("updateCustomerInfo")]
+        [Route("update/info")]
         [Authorize]
         public async Task<IActionResult> UpdateCustomer(CustomerUpdateDto customerUpdateDto)
         {
@@ -75,30 +75,57 @@ namespace Randevuburada.WebApi.Controller.Customer
             customer.User = await _userManager.FindByIdAsync(userId.ToString());
             if (customer.User == null)
             {
-                return BadRequest("Kullanıcı bulunamadı");
+                var returnData = new
+                {
+                    status = "error",
+                    message = "Kullanıcı Bulunamadı!"
+                };
+                return BadRequest(returnData);
             }
             var control = _customerService.TCheckCustomer(userId);
             if (!control)
             {
-                return BadRequest("Bu kullanıcının kaydı bulunmamaktadır.");
+                var returnData = new
+                {
+                    status = "error",
+                    message = "Kullanıcının mevcutta kaydı vardır!"
+                };
+                return BadRequest(returnData);
             }
             customer.UpdatedAt = DateTime.Now;
 
             _customerService.TUpdate(customer);
-            return Ok();
+            var successData = new
+            {
+                status = "success",
+                message = "Kullanıcı bilgileri başarıyla güncellendi!"
+            };
+            return Ok(successData);
         }
 
         [HttpGet]
-        [Route("getCustomerInfo")]
+        [Route("get/info")]
         [Authorize]
         public IActionResult GetCustomer(int userId)
         {
             var customer = _customerService.TGetByUserID(userId);
             if (customer == null)
             {
-                return BadRequest("Kullanıcı bulunamadı");
+                var returnData = new
+                {
+                    status = "error",
+                    message = "Kullanıcı bulunamadı!"
+                };
+                return BadRequest(returnData);
             }
             var customerDto = _mapper.Map<CustomerUpdateDto>(customer);
+
+            var successData = new
+            {
+                status = "success",
+                message = "Kullanıcı bilgileri başarıyla bulundu!",
+                data = customerDto
+            };
             return Ok(customerDto);
         }
 

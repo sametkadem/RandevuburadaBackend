@@ -9,5 +9,7 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface ICompanyBankingDetailsDal : IGenericDal<CompanyBankingDetails>
     {
+        public int GetCountCompanyByUserId(int userId);
+        public IEnumerable<CompanyBankingDetails> GetByUserID(int userId);
     }
 }

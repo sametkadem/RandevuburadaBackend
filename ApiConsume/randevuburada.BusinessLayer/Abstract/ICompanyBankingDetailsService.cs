@@ -9,5 +9,7 @@ namespace randevuburada.BusinessLayer.Abstract
 {
     public interface ICompanyBankingDetailsService : IGenericService<CompanyBankingDetails>
     {
+        public int TGetCountCompanyByUserId(int userId);
+        public IEnumerable<CompanyBankingDetails> TGetByUserID(int userId);
     }
 }
