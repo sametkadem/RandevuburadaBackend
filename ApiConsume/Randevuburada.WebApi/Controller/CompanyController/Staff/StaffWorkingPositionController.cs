@@ -19,7 +19,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Staff
 
 
         [HttpGet]
-        [Route("admin/add/collective/staff/workingPosition")]
+        [Route("admin/staff/workingPosition/collective/set")]
         public IActionResult AddWorkingPositionCollective()
         {
             var workingPositions = new List<string> { "Berber", "Kuaför", "Müdür", "Yönetici", "Asistan" };
@@ -54,7 +54,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Staff
         }
 
         [HttpPost]
-        [Route("admin/add/singular/staff/workingPosition")]
+        [Route("admin/staff/workingPosition/set")]
         public IActionResult AddWorkingPositionSingular(string positionName)
         {
 
@@ -87,7 +87,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Staff
         }
 
         [HttpPost]
-        [Route("admin/update/singular/staff/workingPosition")]
+        [Route("admin/staff/workingPosition/update")]
         public IActionResult UpdateMediaTypeBySingular(int id, string positionName)
         {
             var existing = _staffWorkingPositionService.TGetList().FirstOrDefault(mt => mt.Id == id);
@@ -115,7 +115,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Staff
         }
 
         [HttpPost]
-        [Route("admin/delete/byId/staff/workingPosition")]
+        [Route("admin/staff/workingPosition/delete")]
         public IActionResult DeleteMediaTypeById(int id)
         {
             var existing = _staffWorkingPositionService.TGetByID(id);
@@ -144,7 +144,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Staff
 
 
         [HttpGet]
-        [Route("get/list/staff/workingPosition")]
+        [Route("company/staff/workingPosition/list")]
         public IActionResult GetWorkingPosition()
         {
             var result = _staffWorkingPositionService.TGetList();
@@ -170,7 +170,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Staff
         }
 
         [HttpGet]
-        [Route("get/byId/staff/workingPosition")]
+        [Route("company/staff/workingPosition/get/byId")]
         public IActionResult GetWorkingPositionById(int id)
         {
             var result = _staffWorkingPositionService.TGetByID(id);

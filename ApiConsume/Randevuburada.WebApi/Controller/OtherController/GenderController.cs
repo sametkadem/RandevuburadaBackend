@@ -19,7 +19,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
        }
 
         [HttpGet]
-        [Route("admin/add/gender")]
+        [Route("admin/gender/add")]
         public IActionResult AddGender()
         {
             var control = _genderService.TGetList();
@@ -54,7 +54,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/list/gender")]
+        [Route("gender/list")]
         public IActionResult GetGender()
         {
             var genders = _genderService.TGetList();
@@ -80,7 +80,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/byId/gender/")]
+        [Route("gender/get/byId")]
         public IActionResult GetGenderById(int id)
         {
             var gender = _genderService.TGetByID(id);

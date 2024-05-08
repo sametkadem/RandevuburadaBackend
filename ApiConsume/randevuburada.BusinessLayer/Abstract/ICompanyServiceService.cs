@@ -10,6 +10,7 @@ namespace randevuburada.BusinessLayer.Abstract
     public interface ICompanyServiceService:IGenericService<CompanyService>
     {
         public List<CompanyService> TGetByCompanyId(int companyId);
+        public Task<List<CompanyService>> TGetByCompanyIdAsync(int companyId);
 
     }
 }

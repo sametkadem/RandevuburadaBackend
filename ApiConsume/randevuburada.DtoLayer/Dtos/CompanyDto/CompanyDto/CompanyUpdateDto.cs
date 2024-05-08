@@ -33,7 +33,7 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto
         public string Email { get; set; }
 
         [Url(ErrorMessage = "Geçerli bir website adresi giriniz")]
-        public string Website { get; set; }
+        public string? Website { get; set; }
 
         [Required(ErrorMessage = "Ülke alanı boş geçilemez")]
         [Range(1, 1, ErrorMessage = "Geçerli bir CountryId giriniz")]
@@ -52,6 +52,10 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto
 
         [RegularExpression(@"^-?\d+(\.\d+)?$", ErrorMessage = "Geçerli bir Longitude giriniz")]
         public string Longitude { get; set; }
+
+        [Required(ErrorMessage = "Engelli erişilebilirlik durumu gereklidir.")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Geçerli bir IsDisabledAccessiblity giriniz")]
+        public bool IsDisabledAccessiblity { get; set; }
         public string CompanyAbout { get; set; }
     }
 }

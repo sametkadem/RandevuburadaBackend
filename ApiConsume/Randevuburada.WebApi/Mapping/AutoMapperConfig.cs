@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using randevuburada.DtoLayer.Dtos.AppointmentDto.CustomerAppointmentInfoDto;
+using randevuburada.DtoLayer.Dtos.ChatDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyBankingDetailDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyOwnerInfoDto;
@@ -9,7 +11,10 @@ using randevuburada.DtoLayer.Dtos.CompanyDto.CompanySubscribeDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyTypeDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyWorkingHoursDto;
 using randevuburada.DtoLayer.Dtos.CustomerDto;
+using randevuburada.DtoLayer.Dtos.CustomerDto.CustomerBillingInfoDto;
+using randevuburada.DtoLayer.Dtos.CustomerDto.CustomerFavouriteDto;
 using randevuburada.DtoLayer.Dtos.IdentityDto.RegisterDto;
+using randevuburada.EntityLayer.Concrete.ChatConcrete;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using randevuburada.EntityLayer.Concrete.CustomerConcrete;
 using randevuburada.EntityLayer.Concrete.Identity;
@@ -49,8 +54,21 @@ namespace HotelProject.WebApi.Mapping
             CreateMap<Company, CompanyUpdateDto>().ReverseMap();
 
             CreateMap<CompanyWorkingHours, CompanyWorkingHoursAddDto>().ReverseMap();
+            CreateMap<TimeDto, TimeOnly>()
+                       .ConstructUsing(dto => new TimeOnly(dto.Hour, dto.Minute));
+
             CreateMap<CompanyWorkingHours, CompanyWorkingHoursUpdateDto>().ReverseMap();
 
+            CreateMap<CustomerAppointmentInfo, CustomerAppointmentInfoAddDto>().ReverseMap();
+            CreateMap<CustomerAppointmentInfo, CustomerAppointmentInfoUpdateDto>().ReverseMap();
+
+            CreateMap<CustomerBillingInfo, CustomerBillingInfoAddDto>().ReverseMap();
+            CreateMap<CustomerBillingInfo, CustomerBillingInfoUpdateDto>().ReverseMap();
+
+            CreateMap<CustomerFavourite, CustomerFavouriteAddDto>().ReverseMap();
+
+            CreateMap<Chat, CustomerChatDto>().ReverseMap();
+            CreateMap<Message, CustomerChatDto>().ReverseMap();
         }
     }
 }

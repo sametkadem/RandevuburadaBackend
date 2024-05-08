@@ -12,6 +12,19 @@ namespace randevuburada.DataAccessLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AppointmentStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -32,6 +45,9 @@ namespace randevuburada.DataAccessLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserTypeId = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -50,6 +66,19 @@ namespace randevuburada.DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,6 +175,21 @@ namespace randevuburada.DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MediaType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -408,13 +452,14 @@ namespace randevuburada.DataAccessLayer.Migrations
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Website = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Website = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     CityId = table.Column<int>(type: "int", nullable: false),
                     DistrictId = table.Column<int>(type: "int", nullable: false),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyAbout = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyAbout = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDisabledAccessiblity = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -506,15 +551,15 @@ namespace randevuburada.DataAccessLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gender = table.Column<bool>(type: "bit", nullable: false),
-                    Tc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
-                    DistrictId = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<bool>(type: "bit", nullable: true),
+                    Tc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryId = table.Column<int>(type: "int", nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: true),
+                    DistrictId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
@@ -580,6 +625,7 @@ namespace randevuburada.DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
+                    CompanyStaffIds = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MainServiceId = table.Column<int>(type: "int", nullable: false),
                     ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ServiceDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -637,47 +683,6 @@ namespace randevuburada.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompanyStaffs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    StaffWorkingPositionId = table.Column<int>(type: "int", nullable: false),
-                    StaffWorkingStatusId = table.Column<int>(type: "int", nullable: false),
-                    ProfilPicture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyStaffs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompanyStaffs_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CompanyStaffs_StaffWorkingPosition_StaffWorkingPositionId",
-                        column: x => x.StaffWorkingPositionId,
-                        principalTable: "StaffWorkingPosition",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_CompanyStaffs_StaffWorkingStatus_StaffWorkingStatusId",
-                        column: x => x.StaffWorkingStatusId,
-                        principalTable: "StaffWorkingStatus",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CompanyWorkingHours",
                 columns: table => new
                 {
@@ -685,8 +690,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     DayId = table.Column<int>(type: "int", nullable: false),
-                    OpenTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CloseTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OpenTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    CloseTime = table.Column<TimeOnly>(type: "time", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -707,6 +712,232 @@ namespace randevuburada.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    ChatStatusId = table.Column<int>(type: "int", nullable: false),
+                    LastMessageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ChatStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Chats_ChatStatus_ChatStatusId",
+                        column: x => x.ChatStatusId,
+                        principalTable: "ChatStatus",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Chats_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Chats_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerAppointmentInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerSurname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerTcNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerAppointmentInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerAppointmentInfo_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerBillingInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerSurname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BillingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BillingAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false),
+                    DistrictId = table.Column<int>(type: "int", nullable: false),
+                    BillingZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BillingPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BillingTcNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BillingCompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BillingTaxNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BillingTaxOffice = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Commercial = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerBillingInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerBillingInfo_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerBillingInfo_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerBillingInfo_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerBillingInfo_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerFavourite",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerFavourite", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerFavourite_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerFavourite_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GeneralAppointment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    AppointmentStatusId = table.Column<int>(type: "int", nullable: false),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsCompanyApproved = table.Column<bool>(type: "bit", nullable: false),
+                    LastCancelDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsCancelAppointment = table.Column<bool>(type: "bit", nullable: false),
+                    totalAmount = table.Column<float>(type: "real", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    PaymentTypeId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeneralAppointment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_AppointmentStatus_AppointmentStatusId",
+                        column: x => x.AppointmentStatusId,
+                        principalTable: "AppointmentStatus",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_PaymentType_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentType",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CompanyStaffs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    StaffWorkingPositionId = table.Column<int>(type: "int", nullable: false),
+                    StaffWorkingStatusId = table.Column<int>(type: "int", nullable: false),
+                    ProfilPicture = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CompanyServiceId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompanyStaffs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompanyStaffs_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompanyStaffs_CompanyServices_CompanyServiceId",
+                        column: x => x.CompanyServiceId,
+                        principalTable: "CompanyServices",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CompanyStaffs_StaffWorkingPosition_StaffWorkingPositionId",
+                        column: x => x.StaffWorkingPositionId,
+                        principalTable: "StaffWorkingPosition",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CompanyStaffs_StaffWorkingStatus_StaffWorkingStatusId",
+                        column: x => x.StaffWorkingStatusId,
+                        principalTable: "StaffWorkingStatus",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServiceStaff",
                 columns: table => new
                 {
@@ -723,12 +954,159 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_ServiceStaff_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ServiceStaff_CompanyServices_CompanyServiceId",
                         column: x => x.CompanyServiceId,
                         principalTable: "CompanyServices",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChatId = table.Column<int>(type: "int", nullable: false),
+                    MessageText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MessageDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessageReadDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    IsSystemMessage = table.Column<bool>(type: "bit", nullable: false),
+                    IsCustomerMessage = table.Column<bool>(type: "bit", nullable: false),
+                    IsCompanyMessage = table.Column<bool>(type: "bit", nullable: false),
+                    IsCustomerRead = table.Column<bool>(type: "bit", nullable: false),
+                    IsCompanyRead = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentCompanyInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    PaymentTypeId = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<float>(type: "real", nullable: false),
+                    TotalDiscount = table.Column<float>(type: "real", nullable: false),
+                    TaxRate = table.Column<int>(type: "int", nullable: false),
+                    TaxAmount = table.Column<float>(type: "real", nullable: false),
+                    TotalPrice = table.Column<float>(type: "real", nullable: false),
+                    IsComplate = table.Column<bool>(type: "bit", nullable: false),
+                    IsCancel = table.Column<bool>(type: "bit", nullable: false),
+                    IsWithdrawalAllowed = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentCompanyInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppointmentCompanyInfo_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AppointmentCompanyInfo_GeneralAppointment_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "GeneralAppointment",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AppointmentCompanyInfo_PaymentType_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentType",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    CompanyServiceId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    IsComplate = table.Column<bool>(type: "bit", nullable: false),
+                    IsCancel = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppointmentInfo_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AppointmentInfo_CompanyServices_CompanyServiceId",
+                        column: x => x.CompanyServiceId,
+                        principalTable: "CompanyServices",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AppointmentInfo_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AppointmentInfo_GeneralAppointment_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "GeneralAppointment",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerComment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    AppoinmentId = table.Column<int>(type: "int", nullable: false),
+                    SystemApproved = table.Column<bool>(type: "bit", nullable: false),
+                    CommentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HideUserName = table.Column<bool>(type: "bit", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerComment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomerComment_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerComment_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CustomerComment_GeneralAppointment_AppoinmentId",
+                        column: x => x.AppoinmentId,
+                        principalTable: "GeneralAppointment",
                         principalColumn: "Id");
                 });
 
@@ -764,6 +1142,41 @@ namespace randevuburada.DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppointmentCompanyInfo_AppointmentId",
+                table: "AppointmentCompanyInfo",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentCompanyInfo_CompanyId",
+                table: "AppointmentCompanyInfo",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentCompanyInfo_PaymentTypeId",
+                table: "AppointmentCompanyInfo",
+                column: "PaymentTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentInfo_AppointmentId",
+                table: "AppointmentInfo",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentInfo_CompanyId",
+                table: "AppointmentInfo",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentInfo_CompanyServiceId",
+                table: "AppointmentInfo",
+                column: "CompanyServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentInfo_CustomerId",
+                table: "AppointmentInfo",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -796,6 +1209,21 @@ namespace randevuburada.DataAccessLayer.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_ChatStatusId",
+                table: "Chats",
+                column: "ChatStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_CompanyId",
+                table: "Chats",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_CustomerId",
+                table: "Chats",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryId",
@@ -893,6 +1321,11 @@ namespace randevuburada.DataAccessLayer.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CompanyStaffs_CompanyServiceId",
+                table: "CompanyStaffs",
+                column: "CompanyServiceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CompanyStaffs_StaffWorkingPositionId",
                 table: "CompanyStaffs",
                 column: "StaffWorkingPositionId");
@@ -921,6 +1354,56 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "IX_CompanyWorkingHours_DayId",
                 table: "CompanyWorkingHours",
                 column: "DayId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerAppointmentInfo_CustomerId",
+                table: "CustomerAppointmentInfo",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerBillingInfo_CityId",
+                table: "CustomerBillingInfo",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerBillingInfo_CountryId",
+                table: "CustomerBillingInfo",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerBillingInfo_CustomerId",
+                table: "CustomerBillingInfo",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerBillingInfo_DistrictId",
+                table: "CustomerBillingInfo",
+                column: "DistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerComment_AppoinmentId",
+                table: "CustomerComment",
+                column: "AppoinmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerComment_CompanyId",
+                table: "CustomerComment",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerComment_CustomerId",
+                table: "CustomerComment",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerFavourite_CompanyId",
+                table: "CustomerFavourite",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerFavourite_CustomerId",
+                table: "CustomerFavourite",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_CityId",
@@ -953,6 +1436,31 @@ namespace randevuburada.DataAccessLayer.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GeneralAppointment_AppointmentStatusId",
+                table: "GeneralAppointment",
+                column: "AppointmentStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneralAppointment_CompanyId",
+                table: "GeneralAppointment",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneralAppointment_CustomerId",
+                table: "GeneralAppointment",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneralAppointment_PaymentTypeId",
+                table: "GeneralAppointment",
+                column: "PaymentTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChatId",
+                table: "Messages",
+                column: "ChatId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ServiceStaff_CompanyId",
                 table: "ServiceStaff",
                 column: "CompanyId");
@@ -982,6 +1490,12 @@ namespace randevuburada.DataAccessLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AppointmentCompanyInfo");
+
+            migrationBuilder.DropTable(
+                name: "AppointmentInfo");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -1009,7 +1523,19 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "CompanyWorkingHours");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "CustomerAppointmentInfo");
+
+            migrationBuilder.DropTable(
+                name: "CustomerBillingInfo");
+
+            migrationBuilder.DropTable(
+                name: "CustomerComment");
+
+            migrationBuilder.DropTable(
+                name: "CustomerFavourite");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "ServiceIntervalHours");
@@ -1033,7 +1559,10 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "CompanyPackages");
 
             migrationBuilder.DropTable(
-                name: "CompanyServices");
+                name: "GeneralAppointment");
+
+            migrationBuilder.DropTable(
+                name: "Chats");
 
             migrationBuilder.DropTable(
                 name: "CompanyStaffs");
@@ -1042,19 +1571,34 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "Days");
 
             migrationBuilder.DropTable(
-                name: "Genders");
+                name: "AppointmentStatus");
 
             migrationBuilder.DropTable(
-                name: "MainService");
+                name: "PaymentType");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "ChatStatus");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "CompanyServices");
 
             migrationBuilder.DropTable(
                 name: "StaffWorkingPosition");
 
             migrationBuilder.DropTable(
                 name: "StaffWorkingStatus");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
+
+            migrationBuilder.DropTable(
+                name: "Genders");
+
+            migrationBuilder.DropTable(
+                name: "MainService");
 
             migrationBuilder.DropTable(
                 name: "CompanyBankingDetails");

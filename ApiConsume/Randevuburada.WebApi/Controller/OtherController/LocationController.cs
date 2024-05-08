@@ -24,7 +24,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("admin/add/location/CityAndDistrict")]
+        [Route("admin/location/CityAndDistrict/set")]
         public async Task<IActionResult> AddCityAndDistrict()
         {
             var control = _cityService.TGetList();
@@ -85,7 +85,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/list/city")]
+        [Route("city/list")]
         public IActionResult GetCity()
         {
             var result = _cityService.TGetList();
@@ -99,7 +99,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/byId/city")]
+        [Route("city/get/byId")]
         public IActionResult GetCity(int id)
         {
             var result = _cityService.TGetByID(id);
@@ -124,7 +124,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/list/district")]
+        [Route("district/list")]
         public IActionResult GetDistrictsByCityId(int cityId)
         {
             var districts = _districtService.TGetList().Where(d => d.CityId == cityId).ToList();
@@ -153,7 +153,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/byId/district")]
+        [Route("district/get/byId")]
         public IActionResult GetDistrictById(int id)
         {
             var district = _districtService.TGetByID(id);

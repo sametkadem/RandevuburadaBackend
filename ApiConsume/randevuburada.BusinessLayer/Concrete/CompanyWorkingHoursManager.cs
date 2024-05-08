@@ -1,5 +1,6 @@
 ﻿using randevuburada.BusinessLayer.Abstract;
 using randevuburada.DataAccessLayer.Abstract;
+using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyWorkingHoursDto;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,16 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TDelete(CompanyWorkingHours t)
         {
             _companyWorkingHoursDal.Delete(t);
+        }
+
+        public void TDeleteByCompanyId(int companyId)
+        {
+            _companyWorkingHoursDal.DeleteByCompanyId(companyId);
+        }
+
+        public List<CompanyWorkingHours> TGetByCompanyId(int companyId)
+        {
+            return _companyWorkingHoursDal.GetByCompanyId(companyId);
         }
 
         public CompanyWorkingHours TGetByID(int id)
@@ -46,6 +57,11 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TUpdate(CompanyWorkingHours t)
         {
             _companyWorkingHoursDal.Update(t);
+        }
+
+        public void TUpdateByCompanyId(int companyId, CompanyWorkingHoursUpdateDto companyWorkingHours)
+        {
+            _companyWorkingHoursDal.UpdateByCompanyId(companyId, companyWorkingHours);
         }
     }
 }

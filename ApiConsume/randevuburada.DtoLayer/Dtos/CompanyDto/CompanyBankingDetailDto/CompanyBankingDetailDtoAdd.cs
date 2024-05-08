@@ -32,7 +32,6 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyBankingDetailDto
 
         [Required(ErrorMessage = "Vergi Dairesi Gereklidir.")]
         public string TaxOffice { get; set; }
-
         public string SwiftCode { get; set; }
         public int userId { get; set; }
     }

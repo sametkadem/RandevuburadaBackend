@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{6D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList", "ToDoList", "{CDAF1398-61E5-4D55-B27F-B945F790FA67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randevuburada.WebApi", "ApiConsume\Randevuburada.WebApi\Randevuburada.WebApi.csproj", "{045D7483-EE4A-449E-A66D-052B27169FB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Randevuburada.WebApi", "ApiConsume\Randevuburada.WebApi\Randevuburada.WebApi.csproj", "{045D7483-EE4A-449E-A66D-052B27169FB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "randevuburada.BusinessLayer", "ApiConsume\randevuburada.BusinessLayer\randevuburada.BusinessLayer.csproj", "{A2E45521-6D30-4CFB-BCFD-F324D522D9AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "randevuburada.BusinessLayer", "ApiConsume\randevuburada.BusinessLayer\randevuburada.BusinessLayer.csproj", "{A2E45521-6D30-4CFB-BCFD-F324D522D9AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "randevuburada.EntityLayer", "ApiConsume\randevuburada.EntityLayer\randevuburada.EntityLayer.csproj", "{8758AF6C-EAD9-4BA5-B706-1899D1E6D9AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "randevuburada.EntityLayer", "ApiConsume\randevuburada.EntityLayer\randevuburada.EntityLayer.csproj", "{8758AF6C-EAD9-4BA5-B706-1899D1E6D9AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "randevuburada.DtoLayer", "ApiConsume\randevuburada.DtoLayer\randevuburada.DtoLayer.csproj", "{8F423D8D-1916-4D7D-BD62-7FBD88E887F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "randevuburada.DtoLayer", "ApiConsume\randevuburada.DtoLayer\randevuburada.DtoLayer.csproj", "{8F423D8D-1916-4D7D-BD62-7FBD88E887F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "randevuburada.DataAccessLayer", "ApiConsume\randevuburada.DataAccessLayer\randevuburada.DataAccessLayer.csproj", "{99B5833C-27E0-4775-B98F-21283E482992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "randevuburada.DataAccessLayer", "ApiConsume\randevuburada.DataAccessLayer\randevuburada.DataAccessLayer.csproj", "{99B5833C-27E0-4775-B98F-21283E482992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

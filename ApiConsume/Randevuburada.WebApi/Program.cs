@@ -18,8 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 // DbContext ve diðer servis kayýtlarý
-builder.Services.AddDbContext<Context>(); // Burada YourDbContext, gerçek DbContext sýnýfýnýn adý olmalýdýr.
-
+builder.Services.AddDbContext<Context>();
 builder.Services.AddScoped<ICityDal, EfCityDal>();
 builder.Services.AddScoped<ICityService, CityManager>();
 
@@ -74,6 +73,9 @@ builder.Services.AddScoped<IStaffWorkingHoursService, StaffWorkingHoursManager>(
 builder.Services.AddScoped<IStaffWorkingPositionDal, EfStaffWorkingPositionDal>();
 builder.Services.AddScoped<IStaffWorkingPositionService, StaffWorkingPositionManager>();
 
+builder.Services.AddScoped<IStaffWorkingStatusDal, EfStaffWorkingStatusDal>();
+builder.Services.AddScoped<IStaffWorkingStatusService, StaffWorkingStatusManager>();
+
 builder.Services.AddScoped<ICompanyStaffDal, EfCompanyStaffDal>();
 builder.Services.AddScoped<ICompanyStaffService, CompanyStaffManager>();
 
@@ -83,7 +85,29 @@ builder.Services.AddScoped<ICompanyServiceService, CompanyServiceManager>();
 builder.Services.AddScoped<ICompanyWorkingHoursDal, EfCompanyWorkingHoursDal>();
 builder.Services.AddScoped<ICompanyWorkingHoursService, CompanyWorkingHoursManager>();
 
+builder.Services.AddScoped<IPaymentTypeDal, EfPaymentTypeDal>();
+builder.Services.AddScoped<IPaymentTypeService, PaymentTypeManager>();
 
+builder.Services.AddScoped<IAppointmentStatusDal, EfAppointmentStatusDal>();
+builder.Services.AddScoped<IAppointmentStatusService, AppointmentStatusManager>();
+
+builder.Services.AddScoped<ICustomerAppointmentInfoDal, EfCustomerAppointmentInfoDal>();
+builder.Services.AddScoped<ICustomerAppointmentInfoService, CustomerAppointmentInfoManager>();
+
+builder.Services.AddScoped<ICustomerBillingInfoDal, EfCustomerBillingInfoDal>();
+builder.Services.AddScoped<ICustomerBillingInfoService, CustomerBillingInfoManager>();
+
+builder.Services.AddScoped<ICustomerFavouriteDal, EfCustomerFavouriteDal>();
+builder.Services.AddScoped<ICustomerFavouriteService, CustomerFavouriteManager>();
+
+builder.Services.AddScoped<IChatDal, EfChatDal>();
+builder.Services.AddScoped<IChatService, ChatManager>();
+
+builder.Services.AddScoped<IMessageDal, EfMessageDal>();
+builder.Services.AddScoped<IMessageService, MessageManager>();
+
+builder.Services.AddScoped<IChatStatusDal, EfChatStatusDal>();
+builder.Services.AddScoped<IChatStatusService, ChatStatusManager>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<AppUser, AppRole>()

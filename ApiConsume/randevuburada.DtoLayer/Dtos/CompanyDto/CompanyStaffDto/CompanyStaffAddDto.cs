@@ -18,11 +18,14 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyStaffDto
         [Required(ErrorMessage = "Çalışma Durumu gereklidir.")]
         public int StaffWorkingStatusId { get; set; }
 
+        [Required(ErrorMessage = "Profil Resmi gereklidir.")]
+        public string ProfilPicture { get; set; }
+
         [Required(ErrorMessage = "Ad alanı gereklidir.")]
-        public string Ad { get; set; }
+        public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Soyad alanı gereklidir.")]
-        public string Soyad { get; set; }
+        public string LastName { get; set; }
 
         [Required(ErrorMessage = "Telefon Numarası gereklidir.")]
         public string PhoneNumber { get; set; }

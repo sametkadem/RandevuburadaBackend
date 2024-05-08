@@ -19,7 +19,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("admin/add/collective/mediaType")]
+        [Route("admin/media/type/set/collective")]
         public IActionResult AddMediaType()
         {
             var mediaTypes = new List<string> { "Profil Fotoğrafı", "Öne Çıkan Görsel", "1.Görsel", "2.Görsel", "3.Görsel" };
@@ -54,7 +54,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpPost]
-        [Route("admin/add/singular/mediaType")]
+        [Route("admin/media/type/set")]
         public IActionResult AddMediaTypeSingular(string mediaTypeName)
         {
 
@@ -88,7 +88,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpPost]
-        [Route("admin/update/singular/mediaType/")]
+        [Route("admin/media/type/update")]
         public IActionResult UpdateMediaTypeBySingular(int id, string mediaTypeName)
         {
             var existingMediaType = _mediaTypeService.TGetList().FirstOrDefault(mt => mt.Id == id);
@@ -116,7 +116,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpPost]
-        [Route("admin/delete/byId/mediaType")]
+        [Route("admin/media/type/delete")]
         public IActionResult DeleteMediaTypeById(int id)
         {
             var mediaType = _mediaTypeService.TGetByID(id);
@@ -145,7 +145,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
 
 
         [HttpGet]
-        [Route("get/list/mediaType")]
+        [Route("media/type/list")]
         public IActionResult GetMediaType()
         {
             var mediaTypes = _mediaTypeService.TGetList();
@@ -171,7 +171,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/byId/mediaType")]
+        [Route("media/type/get/byId")]
         public IActionResult GetMediaTypeById(int id)
         {
             var mediaTypes = _mediaTypeService.TGetByID(id);

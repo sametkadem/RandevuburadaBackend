@@ -91,65 +91,32 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("company/service/list")]
-        public async Task<IActionResult> GetCompanyServiceByCompanyIdAsync(int companyId)
+        
+        public IActionResult GetCompanyServiceList(int companyId)
         {
-            var company = _companyService.TGetByID(companyId);
-
-            if (company == null)
+            var companyServiceList = _companyServiceService.TGetByCompanyId(companyId);
+            Console.WriteLine(companyServiceList);
+            if (companyServiceList == null || !companyServiceList.Any())
             {
-                var returnNullCompanyData = new
+                var returnEmptyData = new
                 {
                     status = "error",
-                    message = "İşletme Bulunamadı!"
+                    message = "İşletmenin hizmet listesi boş."
                 };
-                return BadRequest(returnNullCompanyData);
-            }
-
-            var user = await _userManager.FindByIdAsync(company.UserId.ToString());
-
-            if (user == null)
-            {
-                var returnNullUserData = new
-                {
-                    status = "error",
-                    message = "Kullanıcı Bulunamadı!"
-                };
-                return BadRequest(returnNullUserData);
-            }
-
-            var userSubscribe = _companySubscribeService.TGetByUserID(company.UserId);
-            if (userSubscribe == null)
-            {
-                var returnNullUserSubscribeData = new
-                {
-                    status = "error",
-                    message = "Kullanıcının herhangi bir aboneliği bulunamadı!"
-                };
-                return BadRequest(returnNullUserSubscribeData);
-            }
-
-            var companyService = _companyServiceService.TGetByCompanyId(companyId);
-
-            if (!companyService.Any())
-            {
-                var returnData = new
-                {
-                    status = "error",
-                    message = "İşletmenin herhangi bir hizmet kaydı bulunamadı!"
-                };
-                return BadRequest(returnData);
+                return BadRequest(returnEmptyData);
             }
 
             var successData = new
             {
                 status = "success",
-                data = companyService
+                data = companyServiceList
             };
             return Ok(successData);
         }
 
+
         [HttpGet]
-        [Route("company/service/getById")]
+        [Route("company/service/get")]
         public IActionResult GetCompanyServiceById(int id)
         {
 

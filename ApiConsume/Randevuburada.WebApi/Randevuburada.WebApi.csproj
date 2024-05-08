@@ -35,8 +35,4 @@
     <ProjectReference Include="..\randevuburada.EntityLayer\randevuburada.EntityLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controller\AdminController\" />
-  </ItemGroup>
-
 </Project>

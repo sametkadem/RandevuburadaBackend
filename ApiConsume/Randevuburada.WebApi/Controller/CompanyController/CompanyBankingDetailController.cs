@@ -33,7 +33,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
 
         [HttpPost]
-        [Route("set/bankingDetail")]
+        [Route("bankingDetail/set")]
         public async Task<IActionResult> SetCompanyBankingDetailAsync(CompanyBankingDetailDtoAdd companyBankingDetailDtoAdd)
         {
             if (!ModelState.IsValid)
@@ -92,7 +92,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpGet]
-        [Route("get/bankingDetail")]
+        [Route("bankingDetail/list/byUserId")]
         public async Task<IActionResult> GetCompanyBankingDetailByIdAsync(int userId)
         {
 
@@ -128,7 +128,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpPost]
-        [Route("update/bankingDetail")]
+        [Route("bankingDetail/update")]
         public async Task<IActionResult> UpdateCompanyBankingDetailAsync(CompanyBankingDetailDtoUpdate companyBankingDetailDtoUpdate)
         {
             if (!ModelState.IsValid)

@@ -20,7 +20,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Other
         }
 
         [HttpGet]
-        [Route("admin/add/collective/mainService")]
+        [Route("admin/company/service/main/set/collective")]
         public IActionResult AddCollectiveMainService()
         {
             var mainServices = new List<(string, string)>
@@ -62,7 +62,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Other
 
 
         [HttpPost]
-        [Route("admin/add/singular/mainService")]
+        [Route("admin/company/service/main/set")]
         public IActionResult AddMainService(string mainServiceName, string mainServiceDescription)
         {
 
@@ -96,7 +96,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Other
         }
 
         [HttpPost]
-        [Route("admin/update/singular/mainService/")]
+        [Route("admin/service/main/update")]
         public IActionResult UpdateMediaTypeBySingular(int id, string serviceName, string serviceDescription)
         {
             var existingMediaType = _mainService.TGetList().FirstOrDefault(mt => mt.Id == id);
@@ -126,7 +126,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Other
         }
 
         [HttpPost]
-        [Route("admin/delete/byId/mainService/")]
+        [Route("admin/company/service/main/delete")]
         public IActionResult DeleteMainService(int id)
         {
             var mainService = _mainService.TGetByID(id);
@@ -154,7 +154,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Other
         }
 
         [HttpGet]
-        [Route("get/list/mainService")]
+        [Route("company/service/main/list")]
         public IActionResult GetMainService()
         {
             var mainService = _mainService.TGetList();
@@ -181,7 +181,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Other
 
 
         [HttpGet]
-        [Route("get/byId/mainService/")]
+        [Route("company/service/get/byId")]
         public IActionResult GetMainService(int id)
         {
             var mainService = _mainService.TGetByID(id);

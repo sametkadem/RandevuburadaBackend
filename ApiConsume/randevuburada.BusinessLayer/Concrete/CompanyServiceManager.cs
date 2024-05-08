@@ -28,6 +28,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _companyServiceDal.GetByCompanyId(companyId);
         }
 
+        public Task<List<CompanyService>> TGetByCompanyIdAsync(int companyId)
+        {
+            return _companyServiceDal.GetByCompanyIdAsync(companyId);
+        }
+
         public CompanyService TGetByID(int id)
         {
             return _companyServiceDal.GetByID(id);

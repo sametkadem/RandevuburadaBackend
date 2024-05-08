@@ -10,6 +10,8 @@ namespace randevuburada.DataAccessLayer.Abstract
     public interface ICompanyServiceDal : IGenericDal<CompanyService>
     {
         public List<CompanyService> GetByCompanyId(int companyId);
+        public Task<List<CompanyService>> GetByCompanyIdAsync(int companyId);
+
     }
 
 

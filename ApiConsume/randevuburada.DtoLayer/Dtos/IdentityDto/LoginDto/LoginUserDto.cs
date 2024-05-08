@@ -9,8 +9,8 @@ namespace randevuburada.DtoLayer.Dtos.IdentityDto.LoginDto
 {
     public class LoginUserDto
     {
-        [Required(ErrorMessage = "Kullanıcı adı boş geçilemez")]
-        public string UserName { get; set; }
+        [Required(ErrorMessage = "E-Posta/Telefon numarası boş geçilemez")]
+        public string Identifier { get; set; }
         [Required(ErrorMessage = "Şifre alanı boş geçilemez")]
         public string Password { get; set; }
     }

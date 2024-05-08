@@ -9,9 +9,19 @@ namespace randevuburada.DtoLayer.Dtos.IdentityDto.RegisterDto
 {
     public class CreateNewUserDto
     {
-     
+
         [Required(ErrorMessage = "Kullanıcı adı alanı boş geçilemez")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Ad alanı boş geçilemez")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Soyad alanı boş geçilemez")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Telefon numarası alanı boş geçilemez")]
+        [RegularExpression(@"^(05(\d{9}))$", ErrorMessage = "Geçerli bir telefon numarası giriniz")]
+        public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email alanı boş geçilemez")]
         [EmailAddress(ErrorMessage = "Geçerli bir email adresi giriniz")]

@@ -24,7 +24,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpPost]
-        [Route("admin/add/company/type")]
+        [Route("admin/company/type/set")]
         public IActionResult SetCompanyType(CompanyTypeAddDto companyTypeAddDto)
         {
             if (!ModelState.IsValid)
@@ -45,7 +45,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpGet]
-        [Route("company/type")]
+        [Route("company/type/get")]
         public IActionResult GetCompanyType()
         {
             var companyType = _companyTypeService.TGetList();

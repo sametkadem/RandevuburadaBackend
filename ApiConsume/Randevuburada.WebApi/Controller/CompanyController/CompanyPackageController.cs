@@ -21,7 +21,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpPost]
-        [Route("admin/add/package")]
+        [Route("admin/package/add")]
         public IActionResult SetCompanyPackage(CompanyPackageAddDto companyPackageAddDto)
         {
             if (!ModelState.IsValid)
@@ -36,7 +36,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         }
 
         [HttpGet]
-        [Route("company/package")]
+        [Route("company/get/package")]
         public IActionResult GetCompanyPackage()
         {
             var companyPackage = _companyPackageService.TGetList();

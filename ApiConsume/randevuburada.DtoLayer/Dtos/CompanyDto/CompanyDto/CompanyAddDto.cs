@@ -22,19 +22,19 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "İşletme adı gereklidir.")]
-        public string CompanyName { get; set; }
+        public required string CompanyName { get; set; }
         
         [Required(ErrorMessage = "İşletme telefon numarası gereklidir.")]
         [StringLength(11, MinimumLength = 11, ErrorMessage = "Telefon numarası 11 haneli olmalıdır.")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Telefon numarası yalnızca rakamlardan oluşmalıdır.")] 
-        public string PhoneNumber { get; set; }
+        public required string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email alanı boş geçilemez")]
         [EmailAddress(ErrorMessage = "Geçerli bir email adresi giriniz")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Url(ErrorMessage = "Geçerli bir website adresi giriniz")]
-        public string Website { get; set; }
+        public string? Website { get; set; }
 
         [Required(ErrorMessage = "Ülke alanı boş geçilemez")]
         [Range(1, 1, ErrorMessage = "Geçerli bir CountryId giriniz")]
@@ -49,10 +49,14 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto
         public int DistrictId { get; set; }
 
         [RegularExpression(@"^-?\d+(\.\d+)?$", ErrorMessage = "Geçerli bir Latitude giriniz")]
-        public string Latitude { get; set; }
+        public string? Latitude { get; set; }
 
         [RegularExpression(@"^-?\d+(\.\d+)?$", ErrorMessage = "Geçerli bir Longitude giriniz")]
-        public string Longitude { get; set; }
-        public string CompanyAbout { get; set; }
+        public string? Longitude { get; set; }
+
+        [Required(ErrorMessage = "Engelli erişilebilirlik durumu gereklidir.")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Geçerli bir IsDisabledAccessiblity giriniz")]
+        public bool IsDisabledAccessiblity { get; set; }
+        public string? CompanyAbout { get; set; }
     }
 }

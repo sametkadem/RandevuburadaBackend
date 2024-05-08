@@ -17,7 +17,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("admin/add/day")]
+        [Route("admin/day/set")]
         public IActionResult AddDay()
         {
             var days = new List<string> { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" };
@@ -46,7 +46,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/list/day")]
+        [Route("day/list")]
         public IActionResult GetDay()
         {
             var days = _dayService.TGetList();
@@ -72,7 +72,7 @@ namespace Randevuburada.WebApi.Controller.OtherController
         }
 
         [HttpGet]
-        [Route("get/byId/day")]
+        [Route("day/get/byId")]
         public IActionResult GetByIdDay(int id)
         {
             var days = _dayService.TGetByID(id);

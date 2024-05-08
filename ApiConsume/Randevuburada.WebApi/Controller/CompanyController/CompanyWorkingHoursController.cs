@@ -16,6 +16,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
     [ApiController]
     public class CompanyWorkingHoursController : ControllerBase
     {
+        
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly ICompanySubscribeService _companySubscribeService;
@@ -44,10 +45,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(ModelState);
             }
 
-            var companyWorkingHours = _mapper.Map<CompanyWorkingHours>(companyWorkingHoursAddDto);
-            var companyId = companyWorkingHours.CompanyId;
-
-            var company = _companyService.TGetByID(companyId);
+            var company = _companyService.TGetByID(companyWorkingHoursAddDto.CompanyId);
 
             if (company == null)
             {
@@ -60,19 +58,6 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             }
 
             var user = await _userManager.FindByIdAsync(company.UserId.ToString());
-            var userControl = await _userManager.GetUserAsync(HttpContext.User);
-
-            /*
-            if (user != userControl)
-            {
-                var returnNullUserData = new
-                {
-                    status = "error",
-                    message = "Yetkisiz işlem!"
-                };
-                return BadRequest(returnNullUserData);
-            }
-            */
 
             if (user == null)
             {
@@ -85,6 +70,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             }
 
             var userSubscribe = _companySubscribeService.TGetByUserID(user.Id);
+
             if (userSubscribe == null)
             {
                 var returnNullUserSubscribeData = new
@@ -95,9 +81,22 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnNullUserSubscribeData);
             }
 
-            var control = _companyWorkingHoursService.THasCompanyWorkingHours(companyId, companyWorkingHoursAddDto.DayIds);
+            foreach(var dayId in companyWorkingHoursAddDto.DayIds)
+            {
+                var day = _dayService.TGetByID(dayId);
+                if (day == null)
+                {
+                    var returnNullDayData = new
+                    {
+                        status = "error",
+                        message = "Gün Bulunamadı!, Gün id: " + dayId
+                    };
+                    return BadRequest(returnNullDayData);
+                }
+            }
 
-            if(control != null || !control.Any())
+            var control = _companyWorkingHoursService.THasCompanyWorkingHours(companyWorkingHoursAddDto.CompanyId, companyWorkingHoursAddDto.DayIds);
+            if (control != null && control.Any())
             {
                 var controlResultDays = new List<Dictionary<string, string>>();
 
@@ -110,8 +109,8 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                         { "dayId", day.Id.ToString() }
                     };
                     controlResultDays.Add(dayAdd);
-
                 }
+
                 var returnData = new
                 {
                     status = "error",
@@ -119,30 +118,37 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                     data = controlResultDays
                 };
 
+                return BadRequest(returnData);
             }
 
-            companyWorkingHours.CreatedAt = DateTime.Now;
-            companyWorkingHours.UpdatedAt = DateTime.Now;
-            companyWorkingHours.Company = company;
             foreach (var dayId in companyWorkingHoursAddDto.DayIds)
             {
-                companyWorkingHours.DayId = dayId;
-                companyWorkingHours.Day = _dayService.TGetByID(dayId);
-                _companyWorkingHoursService.TInsert(companyWorkingHours);
+                var newCompanyWorkingHours = new CompanyWorkingHours
+                {
+                    CompanyId = companyWorkingHoursAddDto.CompanyId,
+                    DayId = dayId,
+                    OpenTime = new TimeOnly(companyWorkingHoursAddDto.OpenTime.Hour, companyWorkingHoursAddDto.OpenTime.Minute),
+                    CloseTime = new TimeOnly(companyWorkingHoursAddDto.CloseTime.Hour, companyWorkingHoursAddDto.CloseTime.Minute),
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                };
+
+                _companyWorkingHoursService.TInsert(newCompanyWorkingHours);
             }
 
             var returnSuccess = new
             {
                 status = "success",
-                message = "İşletme hizmet bilgileri başarıyla eklendi."
+                message = "İşletme çalışma saati bilgileri başarıyla eklendi."
             };
 
             return Ok(returnSuccess);
         }
 
+
         [HttpGet]
         [Route("company/workingHours/list")]
-        public async Task<IActionResult> GetCompanyServiceByCompanyIdAsync(int companyId)
+        public async Task<IActionResult> GetCompanyWorkingHoursByCompanyIdAsync(int companyId)
         {
             var company = _companyService.TGetByID(companyId);
 
@@ -179,14 +185,14 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnNullUserSubscribeData);
             }
 
-            var companyService = _companyServiceService.TGetByCompanyId(companyId);
+            var companyWorkingHours = _companyWorkingHoursService.TGetByCompanyId(companyId);
 
-            if (!companyService.Any())
+            if (!companyWorkingHours.Any())
             {
                 var returnData = new
                 {
                     status = "error",
-                    message = "İşletmenin herhangi bir hizmet kaydı bulunamadı!"
+                    message = "İşletmenin herhangi bir çalışma saati kaydı bulunamadı!"
                 };
                 return BadRequest(returnData);
             }
@@ -194,24 +200,24 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             var successData = new
             {
                 status = "success",
-                data = companyService
+                data = companyWorkingHours
             };
             return Ok(successData);
         }
 
         [HttpGet]
         [Route("company/workingHours/getById")]
-        public IActionResult GetCompanyServiceById(int id)
+        public IActionResult GetCompanyWorkingHoursById(int id)
         {
 
-            var companyService = _companyServiceService.TGetByID(id);
+            var companyWorkingHours = _companyWorkingHoursService.TGetByID(id);
 
-            if (companyService == null)
+            if (companyWorkingHours == null)
             {
                 var returnData = new
                 {
                     status = "error",
-                    message = "İşletmenin ilgili id ile bir hizmet kaydı bulunamadı!"
+                    message = "İşletmenin ilgili id ile bir çalışma saat kaydı bulunamadı!"
                 };
                 return BadRequest(returnData);
             }
@@ -219,22 +225,22 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             var successData = new
             {
                 status = "success",
-                data = companyService
+                data = companyWorkingHours
             };
             return Ok(successData);
         }
 
         [HttpPost]
         [Route("company/workingHours/update")]
-        public async Task<IActionResult> UpdateCompanyServiceAsync(CompanyServiceUpdateDto companyServiceUpdateDto)
+        public async Task<IActionResult> UpdateCompanyWorkingHoursAsync(CompanyWorkingHoursUpdateDto companyWorkingHoursUpdate)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var companyService = _mapper.Map<CompanyService>(companyServiceUpdateDto);
-            var company = _companyService.TGetByID(companyService.CompanyId);
+            var companyWorkingHours = _mapper.Map<CompanyWorkingHours>(companyWorkingHoursUpdate);
+            var company = _companyService.TGetByID(companyWorkingHours.CompanyId);
             if (company == null)
             {
                 var returnData = new
@@ -255,19 +261,25 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 };
                 return BadRequest(returnData);
             }
-            var control = _companyServiceService.TGetByID(companyService.Id);
-            if (control == null)
-            {
-                var returnData = new
-                {
-                    status = "error",
-                    message = "Güncellenecek kayıt bulunamadı!"
-                };
-                return BadRequest(returnData);
-            }
-            companyService.UpdatedAt = DateTime.Now;
 
-            _companyServiceService.TUpdate(companyService);
+            var dayIds = companyWorkingHoursUpdate.DayIds;
+            foreach (var dayId in companyWorkingHoursUpdate.DayIds)
+            {
+                var day = _dayService.TGetByID(dayId);
+                if (day == null)
+                {
+                    var returnNullDayData = new
+                    {
+                        status = "error",
+                        message = "Gün Bulunamadı!, Gün id: " + dayId
+                    };
+                    return BadRequest(returnNullDayData);
+                }
+            }
+
+            companyWorkingHours.UpdatedAt = DateTime.Now;
+
+            _companyWorkingHoursService.TUpdateByCompanyId(companyWorkingHours.CompanyId, companyWorkingHoursUpdate);
 
             var successData = new
             {
@@ -277,4 +289,5 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             return Ok(successData);
         }
     }
+    
 }

@@ -18,7 +18,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
 
 
         [HttpGet]
-        [Route("admin/add/collective/intervalHours")]
+        [Route("admin/service/interval-hours/collective/set")]
         public IActionResult AddCollectiveInterval()
         {
             var intervals = new List<int> { 15, 30, 45, 60 };
@@ -41,6 +41,13 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
                 {
                     intervalTime = new TimeOnly(0, interval)
                 };
+                if (interval == 60)
+                {
+                    mainServiceModel = new ServiceIntervalHours
+                    {
+                        intervalTime = new TimeOnly(1, 0)
+                    };
+                }
                 _serviceIntervalHoursService.TInsert(mainServiceModel);
             }
 
@@ -54,7 +61,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
         }
 
         [HttpPost]
-        [Route("admin/add/intervalHours")]
+        [Route("admin/service/interval-hours/set")]
         public IActionResult AddInterval(int time)
         {
             var existingInterval = _serviceIntervalHoursService.TGetList().Any(s => s.intervalTime.Minute == time);
@@ -69,11 +76,19 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
                 return BadRequest(errorResponse);
             }
 
+            var mainServiceModel = new ServiceIntervalHours();
 
-            var mainServiceModel = new ServiceIntervalHours
+            if (time < 60)
             {
-                intervalTime = new TimeOnly(0, time)
-            };
+                mainServiceModel.intervalTime = new TimeOnly(0, time);
+            }
+            else
+            {
+                int hours = time / 60;
+                int minutes = time % 60;
+
+                mainServiceModel.intervalTime = new TimeOnly(hours, minutes);
+            }
             _serviceIntervalHoursService.TInsert(mainServiceModel);
 
             var successResponse = new
@@ -86,7 +101,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
         }
 
         [HttpPost]
-        [Route("admin/update/intervalHours")]
+        [Route("admin/service/interval-hours/update")]
         public IActionResult UpdateInterval(int id, int time)
         {
             var existingInterval = _serviceIntervalHoursService.TGetByID(id);
@@ -114,7 +129,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
         }
 
         [HttpPost]
-        [Route("admin/delete/intervalHours")]
+        [Route("admin/service/interval-hours/delete")]
         public IActionResult DeleteInterval(int id)
         {
             var existingInterval = _serviceIntervalHoursService.TGetByID(id);
@@ -141,7 +156,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
         }
 
         [HttpGet]
-        [Route("get/list/intervalHours")]
+        [Route("company/service/interval-hours/list")]
         public IActionResult GetMediaType()
         {
             var mediaTypes = _serviceIntervalHoursService.TGetList();
@@ -168,7 +183,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
 
 
         [HttpGet]
-        [Route("get/byId/intervalHours")]
+        [Route("company/service/interval-hours/get/byId")]
         public IActionResult GetMediaTypeById(int id)
         {
             var mediaTypes = _serviceIntervalHoursService.TGetByID(id);

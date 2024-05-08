@@ -14,10 +14,9 @@ namespace randevuburada.EntityLayer.Concrete.CompanyConcrete
         public Company Company { get; set; }
         public int DayId { get; set; }
         public Day Day { get; set; }
-        public DateTime OpenTime { get; set; }
-        public DateTime CloseTime { get; set; }
+        public TimeOnly OpenTime { get; set; }
+        public TimeOnly CloseTime { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
-
     }
 }

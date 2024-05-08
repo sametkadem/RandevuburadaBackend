@@ -29,7 +29,7 @@ namespace Randevuburada.WebApi.Controller.Customer
 
 
         [HttpPost]
-        [Route("set/info")]
+        [Route("info/set")]
         [Authorize]
         public async Task<IActionResult> AddCustomer(CustomerAddDto customerAddDto)
         {
@@ -60,7 +60,7 @@ namespace Randevuburada.WebApi.Controller.Customer
         }
 
         [HttpPost]
-        [Route("update/info")]
+        [Route("info/update")]
         [Authorize]
         public async Task<IActionResult> UpdateCustomer(CustomerUpdateDto customerUpdateDto)
         {
@@ -95,6 +95,17 @@ namespace Randevuburada.WebApi.Controller.Customer
             customer.UpdatedAt = DateTime.Now;
 
             _customerService.TUpdate(customer);
+
+            var AppUserData = new AppUser
+            {
+                Id = userId,
+                Email = customer.User.Email,
+                PhoneNumber = customer.User.PhoneNumber,
+                FirstName = customer.User.FirstName,
+                LastName = customer.User.LastName
+            };
+
+            // KULLANICI BİLGİLERİ GÜNCELLENECEK DATABASE DE APPUSER TABLOSUNDA
             var successData = new
             {
                 status = "success",
@@ -104,7 +115,7 @@ namespace Randevuburada.WebApi.Controller.Customer
         }
 
         [HttpGet]
-        [Route("get/info")]
+        [Route("info/get/byUserId")]
         [Authorize]
         public IActionResult GetCustomer(int userId)
         {

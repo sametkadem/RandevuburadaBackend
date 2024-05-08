@@ -13,6 +13,9 @@ using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using randevuburada.EntityLayer.Concrete.Other;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete.Staff;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete.Service;
+using randevuburada.EntityLayer.Concrete.AppointmentConcrete;
+using randevuburada.EntityLayer.Concrete.ChatConcrete;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace randevuburada.DataAccessLayer.Concrete
 {
@@ -24,9 +27,9 @@ namespace randevuburada.DataAccessLayer.Concrete
         {
             //optionsBuilder.UseSqlServer("Server=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;Persist Security Info=False;User ID=master;Password=smtKDM110*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
+            //optionsBuilder.UseSqlServer("Server=77.245.159.27\\MSSQLSERVER2019;database=randevuburadaDb;user=master;password=?7n7hLf54;TrustServerCertificate=true");
+            //optionsBuilder.UseSqlServer("Data Source=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;User Id=master@randevuburada;Password=smtKDM110*");
             optionsBuilder.UseSqlServer("Server=samet\\SQLEXPRESS;initial catalog=randevuburadaDb;integrated security=true;TrustServerCertificate=True;");
-            //Data Source=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;User Id=master@randevuburada;Password=smtKDM110*
-            //            optionsBuilder.UseSqlServer("Server=samet\\SQLEXPRESS;initial catalog=randevuburadaDb;integrated security=true;TrustServerCertificate=True;");
             //            optionsBuilder.UseSqlServer("Server=tcp:randevuburada.database.windows.net,1433;Initial Catalog=Randevuburada.WebApi_db;Persist Security Info=False;User ID=master;Password=smtKDM110*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -81,6 +84,23 @@ namespace randevuburada.DataAccessLayer.Concrete
         public DbSet<CompanyMedia> CompanyMedia { get; set; }
 
         public DbSet<CompanySocialMedia> CompanySocialMedia { get; set;}
+
+        public DbSet<AppointmentCompanyInfo> AppointmentCompanyInfo { get; set;}
+        public DbSet<AppointmentInfo> AppointmentInfo { get; set; }
+        public DbSet<GeneralAppointment> GeneralAppointment { get; set; }
+        public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
+
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<ChatStatus> ChatStatus { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<PaymentType> PaymentType { get; set; }
+
+        public DbSet<CustomerComment> CustomerComment { get; set; }
+        public DbSet<CustomerFavourite> CustomerFavourite { get; set;}
+
+        public DbSet<CustomerAppointmentInfo> CustomerAppointmentInfo { get; set; }
+        public DbSet<CustomerBillingInfo> CustomerBillingInfo { get; set; }
 
     }
 }

@@ -137,7 +137,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("list/location/cityAndDistrict")]
-        public async Task<IActionResult> GetCompanyBycityAndDistrictAsync(int cityId = 0, int districtId = 0)
+        public IActionResult GetCompanyBycityAndDistrict(int cityId = 0, int districtId = 0)
         {
             int countryId = 1; // Türkiye
             var company = _companyService.TGetCountryCityDistrictCompany(countryId, cityId, districtId);
@@ -167,9 +167,18 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(ModelState);
             }
 
-            var company = _mapper.Map<Company>(companyUpdateDto);
-            int userId = company.UserId;
+            var company = _companyService.TGetByID(companyUpdateDto.Id);
+            if (company == null)
+            {
+                var returnData = new
+                {
+                    status = "error",
+                    message = "İşletmenin kaydı bulunamadı!"
+                };
+                return BadRequest(returnData);
+            }
 
+            int userId = company.UserId;
             company.User = await _userManager.FindByIdAsync(userId.ToString());
             if (company.User == null)
             {
@@ -193,7 +202,6 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnNullUserSubscribeData);
             }
 
-
             var package = _companyPackageService.TGetByID(userSubscribe.Id);
             if (package == null)
             {
@@ -205,31 +213,18 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnError1);
             }
 
-          
-            company.UpdatedAt = company.CreatedAt;
-            company.CompanyStatus = true;
-            company.CompanyVisibility = true;
-
-            var control = _companyService.TGetByID(company.Id);
-            if (control == null)
-            {
-                var returnData = new
-                {
-                    status = "error",
-                    message = "İşletmenin mevcutta kaydı yoktur!"
-                };
-                return BadRequest(returnData);
-            }
-
             company.UpdatedAt = DateTime.Now;
+
             _companyService.TUpdate(company);
+
             var successData = new
             {
                 status = "success",
-                message = "İşletmenin mevcutta bilgileri başarıyla güncellendi!"
+                message = "İşletmenin mevcut bilgileri başarıyla güncellendi!"
             };
             return Ok(successData);
         }
+
 
         [HttpGet]
         [Route("delete")]

@@ -18,11 +18,10 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyWorkingHoursDto
         public int[] DayIds { get; set; }
 
         [Required(ErrorMessage = "Açılış Saati alanı gereklidir.")]
-        [DataType(DataType.Time, ErrorMessage = "Açılış Saati tarih formatında olmalıdır.")]
-        public DateTime OpenTime { get; set; }
+        public TimeDto OpenTime { get; set; }
 
         [Required(ErrorMessage = "Kapanış Saati alanı gereklidir.")]
-        [DataType(DataType.Time, ErrorMessage = "Kapanış Saati tarih formatında olmalıdır.")]
-        public DateTime CloseTime { get; set; }
+        public TimeDto CloseTime { get; set; }
     }
+    
 }

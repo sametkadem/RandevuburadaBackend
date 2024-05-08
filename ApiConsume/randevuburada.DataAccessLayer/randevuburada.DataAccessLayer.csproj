@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\randevuburada.DtoLayer\randevuburada.DtoLayer.csproj" />
     <ProjectReference Include="..\randevuburada.EntityLayer\randevuburada.EntityLayer.csproj" />
   </ItemGroup>
 
