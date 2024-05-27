@@ -14,7 +14,25 @@ namespace randevuburada.DataAccessLayer.EntityFramework
     {
         public EfCustomerCommentDal(Context context) : base(context)
         {
-
+            
         }
+        public List<CustomerComment> GetCustomerCommentByCompanyId(int companyId)
+        {
+            var context = new Context();
+            return context.CustomerComment.Where(x => x.CompanyId == companyId).ToList();
+        }
+
+        public List<CustomerComment> GetCustomerCommentByCustomerId(int customerId)
+        {
+            var context = new Context();
+            return context.CustomerComment.Where(x => x.CustomerId == customerId).ToList();
+        }
+
+        public float GetAvgRatingByCompanyID(int companyId)
+        {
+            var context = new Context();
+            return context.CustomerComment.Where(x => x.CompanyId == companyId).Average(x => x.Rating);
+        }
+
     }
 }

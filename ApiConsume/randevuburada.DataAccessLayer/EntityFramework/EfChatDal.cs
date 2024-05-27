@@ -70,5 +70,6 @@ namespace randevuburada.DataAccessLayer.EntityFramework
         }
 
 
+
     }
 }

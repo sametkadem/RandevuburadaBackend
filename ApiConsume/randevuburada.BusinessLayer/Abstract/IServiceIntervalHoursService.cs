@@ -9,5 +9,6 @@ namespace randevuburada.BusinessLayer.Abstract
 {
     public interface IServiceIntervalHoursService:IGenericService<ServiceIntervalHours>
     {
+        public TimeOnly TGetServiceIntervalHour(int id);
     }
 }

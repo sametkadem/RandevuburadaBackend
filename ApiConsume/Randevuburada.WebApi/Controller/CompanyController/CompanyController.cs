@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +8,11 @@ using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyOwnerInfoDto;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using randevuburada.EntityLayer.Concrete.Identity;
+using randevuburada.EntityLayer.Concrete.Location;
 using System.Net.NetworkInformation;
 
 namespace Randevuburada.WebApi.Controller.CompanyController
 {
-
     [Route("api/v1/company")]
     [ApiController]
     public class CompanyController : ControllerBase
@@ -21,17 +22,25 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         private readonly UserManager<AppUser> _userManager;
         private readonly ICompanyPackageService _companyPackageService;
         private readonly ICompanyService _companyService;
-        public CompanyController(ICompanyService companyService, ICompanyPackageService companyPackageService, IMapper mapper, UserManager<AppUser> userManager, ICompanySubscribeService companySubscribeService)
+        private readonly ICityService _cityService;
+        private readonly IDistrictService _districtService;
+        private readonly ICompanyTypeService _companyTypeService;
+
+        public CompanyController(ICompanyService companyService, ICompanyPackageService companyPackageService, IMapper mapper, UserManager<AppUser> userManager, ICompanySubscribeService companySubscribeService, ICityService cityService, IDistrictService districtService, ICompanyTypeService companyTypeService)
         {
             _mapper = mapper;
             _companyService = companyService;
             _companyPackageService = companyPackageService;
             _userManager = userManager;
             _companySubscribeService = companySubscribeService;
+            _cityService = cityService;
+            _districtService = districtService;
+            _companyTypeService = companyTypeService;
         }
 
         [HttpPost]
         [Route("set")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> SetCompanyAsync(CompanyAddDto companyAddDto)
         {
             if (!ModelState.IsValid)
@@ -67,7 +76,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
             var countCompany = _companyService.TGetCountCompanyByUserId(userId);
 
-            var package = _companyPackageService.TGetByID(userSubscribe.Id);
+            var package = _companyPackageService.TGetByID(userSubscribe.companyPackageId);
             if (package == null)
             {
                 var returnError1 = new
@@ -78,7 +87,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnError1);
             }
 
-            if(countCompany > package.MaxBranch)
+            if(countCompany >= package.MaxBranch)
             {
                 var returnError2 = new
                 {
@@ -127,6 +136,15 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 };
                 return BadRequest(returnNullCompanyData);
             }
+
+            foreach (var item in company)
+            {
+                var city = new City { CityName = _cityService.TGetByID(item.CityId)?.CityName };
+                item.City = city;
+
+                var district = new District { DistrictName = _districtService.TGetByID(item.DistrictId)?.DistrictName };
+                item.District = district;
+            }
             var returnData = new
             {
                 status = "success",
@@ -150,6 +168,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 };
                 return BadRequest(returnNullCompanyData);
             }
+          
             var returnData = new
             {
                 status = "success",
@@ -160,6 +179,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("update")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> UpdateCompanyAsync(CompanyUpdateDto companyUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -202,7 +222,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnNullUserSubscribeData);
             }
 
-            var package = _companyPackageService.TGetByID(userSubscribe.Id);
+            var package = _companyPackageService.TGetByID(userSubscribe.companyPackageId);
             if (package == null)
             {
                 var returnError1 = new
@@ -215,7 +235,16 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
             company.UpdatedAt = DateTime.Now;
 
-            _companyService.TUpdate(company);
+            var updateCompany = _companyService.TupdateCompany(company);
+            if (updateCompany == null)
+            {
+                var returnError2 = new
+                {
+                    status = "error",
+                    message = "İşletme güncellenirken bir hata oluştu!"
+                };
+                return BadRequest(returnError2);
+            }
 
             var successData = new
             {
@@ -225,9 +254,9 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             return Ok(successData);
         }
 
-
         [HttpGet]
         [Route("delete")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> DeleteCompany(int userId, int companyId)
         {
             if (!ModelState.IsValid)
@@ -285,6 +314,41 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             return Ok(returnData);
         }
 
-
+        [HttpGet]
+        [Route("list/byCompanyId")]
+        [Authorize(Roles = "Company")]
+        public IActionResult GetCompanyById(int companyId)
+        {
+            try
+            {
+                var company = _companyService.TGetByID(companyId);
+                if (company == null)
+                {
+                    var returnData = new
+                    {
+                        status = "error",
+                        message = "İşletme bulunamadı!"
+                    };
+                    return BadRequest(returnData);
+                }
+                var returnsData = new
+                {
+                    status = "success",
+                    data = company
+                };
+                return Ok(returnsData);
+            }
+            catch (Exception ex)
+            {
+                var returnData = new
+                {
+                    status = "error",
+                    message = ex.Message
+                };
+                return BadRequest(returnData);
+            }
+        }
     }
+
+
 }

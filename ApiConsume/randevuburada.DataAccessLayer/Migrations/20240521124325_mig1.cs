@@ -497,7 +497,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_Companies_Districts_DistrictId",
                         column: x => x.DistrictId,
                         principalTable: "Districts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -627,6 +628,7 @@ namespace randevuburada.DataAccessLayer.Migrations
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     CompanyStaffIds = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MainServiceId = table.Column<int>(type: "int", nullable: false),
+                    ServiceIntervalHoursId = table.Column<int>(type: "int", nullable: false),
                     ServiceName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ServiceDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GenderId = table.Column<int>(type: "int", nullable: false),
@@ -652,6 +654,11 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_CompanyServices_MainService_MainServiceId",
                         column: x => x.MainServiceId,
                         principalTable: "MainService",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_CompanyServices_ServiceIntervalHours_ServiceIntervalHoursId",
+                        column: x => x.ServiceIntervalHoursId,
+                        principalTable: "ServiceIntervalHours",
                         principalColumn: "Id");
                 });
 
@@ -811,7 +818,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_CustomerBillingInfo_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CustomerBillingInfo_Districts_DistrictId",
                         column: x => x.DistrictId,
@@ -842,51 +850,6 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_CustomerFavourite_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GeneralAppointment",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    AppointmentStatusId = table.Column<int>(type: "int", nullable: false),
-                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsCompanyApproved = table.Column<bool>(type: "bit", nullable: false),
-                    LastCancelDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsCancelAppointment = table.Column<bool>(type: "bit", nullable: false),
-                    totalAmount = table.Column<float>(type: "real", nullable: false),
-                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
-                    PaymentTypeId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GeneralAppointment", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GeneralAppointment_AppointmentStatus_AppointmentStatusId",
-                        column: x => x.AppointmentStatusId,
-                        principalTable: "AppointmentStatus",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GeneralAppointment_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GeneralAppointment_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GeneralAppointment_PaymentType_PaymentTypeId",
-                        column: x => x.PaymentTypeId,
-                        principalTable: "PaymentType",
                         principalColumn: "Id");
                 });
 
@@ -954,7 +917,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_ServiceStaff_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ServiceStaff_CompanyServices_CompanyServiceId",
                         column: x => x.CompanyServiceId,
@@ -989,6 +953,97 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_Messages_Chats_ChatId",
                         column: x => x.ChatId,
                         principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GeneralAppointment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    AppointmentStatusId = table.Column<int>(type: "int", nullable: false),
+                    CustomerAppointmentInfoId = table.Column<int>(type: "int", nullable: false),
+                    CustomerBillingInfoId = table.Column<int>(type: "int", nullable: false),
+                    AppointmentDateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentDateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsCompanyApproved = table.Column<bool>(type: "bit", nullable: false),
+                    LastCancelDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsCancelAppointment = table.Column<bool>(type: "bit", nullable: false),
+                    totalAmount = table.Column<float>(type: "real", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    PaymentTypeId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeneralAppointment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_AppointmentStatus_AppointmentStatusId",
+                        column: x => x.AppointmentStatusId,
+                        principalTable: "AppointmentStatus",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_CustomerAppointmentInfo_CustomerAppointmentInfoId",
+                        column: x => x.CustomerAppointmentInfoId,
+                        principalTable: "CustomerAppointmentInfo",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_CustomerBillingInfo_CustomerBillingInfoId",
+                        column: x => x.CustomerBillingInfoId,
+                        principalTable: "CustomerBillingInfo",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GeneralAppointment_PaymentType_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentType",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StaffWorkingHours",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StaffId = table.Column<int>(type: "int", nullable: false),
+                    CompanyStaffId = table.Column<int>(type: "int", nullable: false),
+                    DayId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDateBreak = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDateBreak = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffWorkingHours", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StaffWorkingHours_CompanyStaffs_CompanyStaffId",
+                        column: x => x.CompanyStaffId,
+                        principalTable: "CompanyStaffs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StaffWorkingHours_Days_DayId",
+                        column: x => x.DayId,
+                        principalTable: "Days",
                         principalColumn: "Id");
                 });
 
@@ -1042,9 +1097,13 @@ namespace randevuburada.DataAccessLayer.Migrations
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     CompanyServiceId = table.Column<int>(type: "int", nullable: false),
+                    StaffId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     IsComplate = table.Column<bool>(type: "bit", nullable: false),
                     IsCancel = table.Column<bool>(type: "bit", nullable: false),
+                    AppointmentDateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentDateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -1060,6 +1119,11 @@ namespace randevuburada.DataAccessLayer.Migrations
                         name: "FK_AppointmentInfo_CompanyServices_CompanyServiceId",
                         column: x => x.CompanyServiceId,
                         principalTable: "CompanyServices",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AppointmentInfo_CompanyStaffs_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "CompanyStaffs",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AppointmentInfo_Customers_CustomerId",
@@ -1110,37 +1174,6 @@ namespace randevuburada.DataAccessLayer.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "StaffWorkingHours",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StaffId = table.Column<int>(type: "int", nullable: false),
-                    CompanyStaffId = table.Column<int>(type: "int", nullable: false),
-                    DayId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartDateBreak = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDateBreak = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StaffWorkingHours", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StaffWorkingHours_CompanyStaffs_CompanyStaffId",
-                        column: x => x.CompanyStaffId,
-                        principalTable: "CompanyStaffs",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_StaffWorkingHours_Days_DayId",
-                        column: x => x.DayId,
-                        principalTable: "Days",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentCompanyInfo_AppointmentId",
                 table: "AppointmentCompanyInfo",
@@ -1175,6 +1208,11 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "IX_AppointmentInfo_CustomerId",
                 table: "AppointmentInfo",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentInfo_StaffId",
+                table: "AppointmentInfo",
+                column: "StaffId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -1294,7 +1332,7 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "IX_CompanyOwnerInfos_UserId",
                 table: "CompanyOwnerInfos",
                 column: "UserId");
-
+            
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyServices_CompanyId",
                 table: "CompanyServices",
@@ -1309,6 +1347,11 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "IX_CompanyServices_MainServiceId",
                 table: "CompanyServices",
                 column: "MainServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyServices_ServiceIntervalHoursId",
+                table: "CompanyServices",
+                column: "ServiceIntervalHoursId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanySocialMedia_CompanyId",
@@ -1446,6 +1489,16 @@ namespace randevuburada.DataAccessLayer.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GeneralAppointment_CustomerAppointmentInfoId",
+                table: "GeneralAppointment",
+                column: "CustomerAppointmentInfoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneralAppointment_CustomerBillingInfoId",
+                table: "GeneralAppointment",
+                column: "CustomerBillingInfoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GeneralAppointment_CustomerId",
                 table: "GeneralAppointment",
                 column: "CustomerId");
@@ -1523,12 +1576,6 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "CompanyWorkingHours");
 
             migrationBuilder.DropTable(
-                name: "CustomerAppointmentInfo");
-
-            migrationBuilder.DropTable(
-                name: "CustomerBillingInfo");
-
-            migrationBuilder.DropTable(
                 name: "CustomerComment");
 
             migrationBuilder.DropTable(
@@ -1536,9 +1583,6 @@ namespace randevuburada.DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Messages");
-
-            migrationBuilder.DropTable(
-                name: "ServiceIntervalHours");
 
             migrationBuilder.DropTable(
                 name: "ServiceStaff");
@@ -1574,13 +1618,16 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "AppointmentStatus");
 
             migrationBuilder.DropTable(
+                name: "CustomerAppointmentInfo");
+
+            migrationBuilder.DropTable(
+                name: "CustomerBillingInfo");
+
+            migrationBuilder.DropTable(
                 name: "PaymentType");
 
             migrationBuilder.DropTable(
                 name: "ChatStatus");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "CompanyServices");
@@ -1592,6 +1639,9 @@ namespace randevuburada.DataAccessLayer.Migrations
                 name: "StaffWorkingStatus");
 
             migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
                 name: "Companies");
 
             migrationBuilder.DropTable(
@@ -1599,6 +1649,9 @@ namespace randevuburada.DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "MainService");
+
+            migrationBuilder.DropTable(
+                name: "ServiceIntervalHours");
 
             migrationBuilder.DropTable(
                 name: "CompanyBankingDetails");

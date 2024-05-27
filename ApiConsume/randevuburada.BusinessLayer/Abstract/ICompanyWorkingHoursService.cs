@@ -14,5 +14,9 @@ namespace randevuburada.BusinessLayer.Abstract
         public List<CompanyWorkingHours> TGetByCompanyId(int companyId);
         public void TDeleteByCompanyId(int companyId);
         public void TUpdateByCompanyId(int companyId, CompanyWorkingHoursUpdateDto companyWorkingHours);
+        public CompanyWorkingHours TGetByCompanyIdAndDayId(int companyId, int dayId);
+
+        public int TupdateOrInsertCompanyWorkingHours(CompanyWorkingHours companyWorkingHours);
+
     }
 }

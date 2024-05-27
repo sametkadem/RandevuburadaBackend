@@ -9,5 +9,6 @@ namespace randevuburada.BusinessLayer.Abstract
 {
     public interface IChatStatusService : IGenericService<ChatStatus>
     {
+        public string TGetChatStatusName(int chatStatusId);
     }
 }

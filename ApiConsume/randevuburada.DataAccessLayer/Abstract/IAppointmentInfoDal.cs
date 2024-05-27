@@ -9,5 +9,11 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface IAppointmentInfoDal : IGenericDal<AppointmentInfo>
     {
+        public List<AppointmentInfo> GetAppointmentInfoByCompanyAndServiceIdAndDate(int companyId, int serviceId, DateTime date);
+        public List<AppointmentInfo> GetAppointmentInfoByCompanyAndStaffIdAndDate(int companyId, int staffId, DateTime date);
+
+        public List<AppointmentInfo> GetAppointmentsByAppointmentId(int appointmentId);
+
+
     }
 }

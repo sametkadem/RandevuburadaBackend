@@ -11,5 +11,7 @@ namespace randevuburada.DataAccessLayer.Abstract
     {
         public bool CheckCustomer(int userId);
         public Customer GetByUserID(int userId);
+        public List<object> GetCustomerFirstNameLastNameAndPhoneNumbers(int customerId);
+        public string GetCustomerName(int customerId);
     }
 }

@@ -23,6 +23,16 @@ namespace randevuburada.BusinessLayer.Concrete
             _generalAppointmentDal.Delete(t);
         }
 
+        public List<GeneralAppointment> TGetByCompanyId(int companyId)
+        {
+            return _generalAppointmentDal.GetByCompanyId(companyId);
+        }
+
+        public List<GeneralAppointment> TGetByCustomerId(int customerId)
+        {
+            return _generalAppointmentDal.GetByCustomerId(customerId);
+        }
+
         public GeneralAppointment TGetByID(int id)
         {
             return _generalAppointmentDal.GetByID(id);
@@ -36,6 +46,11 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TInsert(GeneralAppointment t)
         {
             _generalAppointmentDal.Insert(t);
+        }
+
+        public int TInsertGeneralAppointment(GeneralAppointment generalAppointment)
+        {
+            return _generalAppointmentDal.InsertGeneralAppointment(generalAppointment);
         }
 
         public void TUpdate(GeneralAppointment t)

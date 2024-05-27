@@ -16,13 +16,13 @@ namespace randevuburada.EntityLayer.Concrete.CompanyConcrete
         [Key]
         public int Id { get; set; }
         public int CompanyId { get; set; }
-        [ForeignKey("CompanyId")]
         public Company Company { get; set; }
         public required List<int> CompanyStaffIds { get; set; }
         public List<CompanyStaff> CompanyStaffs { get; set; }
         public int MainServiceId { get; set; }
-        [ForeignKey("MainServiceId")]
         public MainService MainService { get; set; }
+        public int ServiceIntervalHoursId { get; set; }
+        public ServiceIntervalHours ServiceIntervalHours { get; set; }
         public required string ServiceName { get; set; }
         public required string ServiceDescription { get; set; }
         public int GenderId { get; set; }

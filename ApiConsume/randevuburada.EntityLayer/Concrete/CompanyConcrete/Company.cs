@@ -17,6 +17,7 @@ namespace randevuburada.EntityLayer.Concrete.CompanyConcrete
         public CompanyType CompanyType { get; set; }
         public int CompanyBankingDetailsId { get; set; }
         public CompanyBankingDetails CompanyBankingDetails { get; set; }
+        public string CompanyLogo { get; set; }
         public string CompanyName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
@@ -29,6 +30,7 @@ namespace randevuburada.EntityLayer.Concrete.CompanyConcrete
         public District District { get; set; }
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
+        public string? CompanyAdress { get; set; }
         public string? CompanyAbout {  get; set; }
         public bool IsDisabledAccessiblity { get; set; }
         public int UserId { get; set; }

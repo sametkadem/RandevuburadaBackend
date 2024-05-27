@@ -34,6 +34,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _companyWorkingHoursDal.GetByCompanyId(companyId);
         }
 
+        public CompanyWorkingHours TGetByCompanyIdAndDayId(int companyId, int dayId)
+        {
+            return _companyWorkingHoursDal.GetByCompanyIdAndDayId(companyId, dayId);
+        }
+
         public CompanyWorkingHours TGetByID(int id)
         {
             return _companyWorkingHoursDal.GetByID(id);
@@ -62,6 +67,11 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TUpdateByCompanyId(int companyId, CompanyWorkingHoursUpdateDto companyWorkingHours)
         {
             _companyWorkingHoursDal.UpdateByCompanyId(companyId, companyWorkingHours);
+        }
+
+        public int TupdateOrInsertCompanyWorkingHours(CompanyWorkingHours companyWorkingHours)
+        {
+            return _companyWorkingHoursDal.updateOrInsertCompanyWorkingHours(companyWorkingHours);
         }
     }
 }

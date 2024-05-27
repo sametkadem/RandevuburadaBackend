@@ -39,6 +39,16 @@ namespace randevuburada.BusinessLayer.Concrete
             return _customerDal.GetByUserID(userId);
         }
 
+        public List<object> TGetCustomerFirstNameLastNameAndPhoneNumbers(int customerId)
+        {
+            return _customerDal.GetCustomerFirstNameLastNameAndPhoneNumbers(customerId);
+        }
+
+        public string TGetCustomerName(int customerId)
+        {
+            return _customerDal.GetCustomerName(customerId);
+        }
+
         public List<Customer> TGetList()
         {
             return _customerDal.GetList();

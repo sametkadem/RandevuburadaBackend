@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,8 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("bankingDetail/set")]
+        [Authorize(Roles = "Company")]
+
         public async Task<IActionResult> SetCompanyBankingDetailAsync(CompanyBankingDetailDtoAdd companyBankingDetailDtoAdd)
         {
             if (!ModelState.IsValid)
@@ -66,20 +69,8 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnNullUserSubscribeData);
             }
 
-            var package = _companyPackageService.TGetByID(userSubscribe.Id);
             var countBankDetailse = _companyBankingDetailsService.TGetCountCompanyByUserId(userId);
-            var countCompanyPackage = package.MaxBranch;
-
-            if (countCompanyPackage <= countBankDetailse)
-            {
-                var returnMaxData = new
-                {
-                    status = "error",
-                    message = "Kullanıcının maksimum sayıda banka detay bilgileri bulunmaktadır!"
-                };
-                return BadRequest(returnMaxData);
-            }
-
+            
             _companyBankingDetailsService.TInsert(companyBankingDetail);
 
             var returnSuccess = new
@@ -93,6 +84,8 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("bankingDetail/list/byUserId")]
+        [Authorize(Roles = "Company")]
+
         public async Task<IActionResult> GetCompanyBankingDetailByIdAsync(int userId)
         {
 
@@ -129,6 +122,8 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("bankingDetail/update")]
+        [Authorize(Roles = "Company")]
+
         public async Task<IActionResult> UpdateCompanyBankingDetailAsync(CompanyBankingDetailDtoUpdate companyBankingDetailDtoUpdate)
         {
             if (!ModelState.IsValid)

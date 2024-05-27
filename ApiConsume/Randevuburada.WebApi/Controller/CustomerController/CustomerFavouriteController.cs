@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
 
         [HttpPost]
         [Route("customer/favourite/set")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> AddCustomerFavourite(CustomerFavouriteAddDto customerFavouriteAddDto)
         {
             if (!ModelState.IsValid)
@@ -128,6 +130,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
 
         [HttpGet]
         [Route("customer/favourite/list/byCustomerId")]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetCustomerFavouriteList(int customerId)
         {
             if (!ModelState.IsValid)
@@ -185,7 +188,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
 
         [HttpPost]
         [Route("customer/favourite/delete")]
-
+        [Authorize(Roles = "Customer")]
         public IActionResult DeleteCustomerFavourite(int id)
         {
             if (!ModelState.IsValid)

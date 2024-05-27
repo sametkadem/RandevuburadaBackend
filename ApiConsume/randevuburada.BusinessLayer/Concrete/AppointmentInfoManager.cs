@@ -18,6 +18,11 @@ namespace randevuburada.BusinessLayer.Concrete
             _appointmentInfoDal = appointmentInfoDal;
         }
 
+        public List<AppointmentInfo> TGetAppointmentInfoByCompanyAndServiceIdAndDate(int companyId, int serviceId, DateTime date)
+        {
+            return _appointmentInfoDal.GetAppointmentInfoByCompanyAndServiceIdAndDate(companyId, serviceId, date);
+        }
+
         public void TDelete(AppointmentInfo t)
         {
             _appointmentInfoDal.Delete(t);
@@ -41,6 +46,16 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TUpdate(AppointmentInfo t)
         {
             _appointmentInfoDal.Update(t);
+        }
+
+        public List<AppointmentInfo> TGetAppointmentInfoByCompanyAndStaffIdAndDate(int companyId, int staffId, DateTime date)
+        {
+            return _appointmentInfoDal.GetAppointmentInfoByCompanyAndStaffIdAndDate(companyId, staffId, date);
+        }
+
+        public List<AppointmentInfo> TGetAppointmentsByAppointmentId(int appointmentId)
+        {
+            return _appointmentInfoDal.GetAppointmentsByAppointmentId(appointmentId);
         }
     }
 }

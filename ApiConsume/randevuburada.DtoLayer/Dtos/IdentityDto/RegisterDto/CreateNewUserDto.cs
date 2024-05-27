@@ -20,7 +20,6 @@ namespace randevuburada.DtoLayer.Dtos.IdentityDto.RegisterDto
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Telefon numarası alanı boş geçilemez")]
-        [RegularExpression(@"^(05(\d{9}))$", ErrorMessage = "Geçerli bir telefon numarası giriniz")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email alanı boş geçilemez")]
@@ -32,7 +31,6 @@ namespace randevuburada.DtoLayer.Dtos.IdentityDto.RegisterDto
 
         [Required(ErrorMessage = "Şifre tekrarı alanı boş geçilemez")]
         [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", ErrorMessage = "Şifre en az bir küçük harf, bir büyük harf, bir rakam ve bir özel karakter içermelidir ve 8-15 karakter uzunluğunda olmalıdır.")]
         public string ConfirmPassword { get; set; }
     }
 }

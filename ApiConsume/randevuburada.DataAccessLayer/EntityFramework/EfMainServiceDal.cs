@@ -1,6 +1,8 @@
-﻿using randevuburada.DataAccessLayer.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
+using randevuburada.DataAccessLayer.Abstract;
 using randevuburada.DataAccessLayer.Concrete;
 using randevuburada.DataAccessLayer.Repositories;
+using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete.Service;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,15 @@ namespace randevuburada.DataAccessLayer.EntityFramework
     {
         public EfMainServiceDal(Context context) : base(context)
         {
+        }
+        public string GetMainServiceName(int id)
+        {
+       
+            using (var context = new Context())
+            {
+
+                return context.MainService.Where(x => x.Id == id).Select(x => x.ServiceName).FirstOrDefault();
+            }
         }
     }
 }

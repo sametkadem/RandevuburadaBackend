@@ -28,6 +28,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _chatStatusDal.GetByID(id);
         }
 
+        public string TGetChatStatusName(int chatStatusId)
+        {
+            return _chatStatusDal.GetChatStatusName(chatStatusId);
+        }
+
         public List<ChatStatus> TGetList()
         {
             return _chatStatusDal.GetList();

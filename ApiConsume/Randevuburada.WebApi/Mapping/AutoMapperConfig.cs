@@ -12,6 +12,7 @@ using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyTypeDto;
 using randevuburada.DtoLayer.Dtos.CompanyDto.CompanyWorkingHoursDto;
 using randevuburada.DtoLayer.Dtos.CustomerDto;
 using randevuburada.DtoLayer.Dtos.CustomerDto.CustomerBillingInfoDto;
+using randevuburada.DtoLayer.Dtos.CustomerDto.CustomerCommentDto;
 using randevuburada.DtoLayer.Dtos.CustomerDto.CustomerFavouriteDto;
 using randevuburada.DtoLayer.Dtos.IdentityDto.RegisterDto;
 using randevuburada.EntityLayer.Concrete.ChatConcrete;
@@ -54,8 +55,7 @@ namespace HotelProject.WebApi.Mapping
             CreateMap<Company, CompanyUpdateDto>().ReverseMap();
 
             CreateMap<CompanyWorkingHours, CompanyWorkingHoursAddDto>().ReverseMap();
-            CreateMap<TimeDto, TimeOnly>()
-                       .ConstructUsing(dto => new TimeOnly(dto.Hour, dto.Minute));
+           
 
             CreateMap<CompanyWorkingHours, CompanyWorkingHoursUpdateDto>().ReverseMap();
 
@@ -69,6 +69,9 @@ namespace HotelProject.WebApi.Mapping
 
             CreateMap<Chat, CustomerChatDto>().ReverseMap();
             CreateMap<Message, CustomerChatDto>().ReverseMap();
+
+            CreateMap<CustomerComment, CustomerCommentAddDto>().ReverseMap();
+
         }
     }
 }

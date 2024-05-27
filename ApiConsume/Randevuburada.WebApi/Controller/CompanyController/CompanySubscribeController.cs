@@ -31,6 +31,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("subscribe/set")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> SetCompanySubscribeAsync(CompanySubscribeAddDto companySubscribeAddDto)
         {
             if (!ModelState.IsValid)
@@ -92,6 +93,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("subscribe/update")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> UpdateCompanySubscribe(CompanySubscribeUpdateDto companySubscribeUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -160,6 +162,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("subscribe/get")]
+        [Authorize(Roles = "Company")]
         public IActionResult GetCompanySubscribe(int userId)
         {
             var companySubscribe = _companySubscribeService.TGetByUserID(userId);

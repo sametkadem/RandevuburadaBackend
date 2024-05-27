@@ -18,7 +18,13 @@ namespace randevuburada.EntityLayer.Concrete.AppointmentConcrete
         public Customer Customer { get; set; }
         public int AppointmentStatusId { get; set; }
         public AppointmentStatus AppointmentStatus { get; set; }
-        public DateTime AppointmentDate { get; set; }
+        public int CustomerAppointmentInfoId { get; set; }
+        public CustomerAppointmentInfo CustomerAppointmentInfo { get; set; }
+        public int CustomerBillingInfoId { get; set; }
+        public CustomerBillingInfo CustomerBillingInfo { get; set; }
+        public DateTime AppointmentDateStart { get; set; }
+        public DateTime AppointmentTime { get; set; }
+        public DateTime AppointmentDateEnd { get; set; }
         public bool IsCompanyApproved { get; set; }
         public DateTime LastCancelDate { get; set; }
         public bool IsCancelAppointment { get; set; }
@@ -29,5 +35,6 @@ namespace randevuburada.EntityLayer.Concrete.AppointmentConcrete
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
+        public AppointmentInfo[] AppointmentDetail { get; set; }
     }
 }

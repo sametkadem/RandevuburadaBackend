@@ -57,5 +57,10 @@ namespace randevuburada.BusinessLayer.Concrete
         {
             return _companyDal.GetCountryCityDistrictCompany(countryId, cityId, districtId);
         }
+
+        public Company TupdateCompany(Company company)
+        {
+            return _companyDal.updateCompany(company);
+        }
     }
 }

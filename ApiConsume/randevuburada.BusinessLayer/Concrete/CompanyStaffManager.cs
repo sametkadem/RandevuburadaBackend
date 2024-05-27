@@ -38,6 +38,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _companyStaffDal.GetList();
         }
 
+        public List<CompanyStaff> TgetStaffsByArrayInts(List<int> staffIds)
+        {
+            return _companyStaffDal.getStaffsByArrayInts(staffIds);
+        }
+
         public void TInsert(CompanyStaff t)
         {
             _companyStaffDal.Insert(t);
@@ -46,6 +51,11 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TUpdate(CompanyStaff t)
         {
             _companyStaffDal.Update(t);
+        }
+
+        public CompanyStaff TupdateCompanyStaff(CompanyStaff companyStaff)
+        {
+            return _companyStaffDal.updateCompanyStaff(companyStaff);
         }
     }
 }

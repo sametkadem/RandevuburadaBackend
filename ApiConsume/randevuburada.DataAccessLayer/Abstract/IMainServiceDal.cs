@@ -9,5 +9,6 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface IMainServiceDal : IGenericDal<MainService>
     {
+        public string GetMainServiceName(int id);
     }
 }

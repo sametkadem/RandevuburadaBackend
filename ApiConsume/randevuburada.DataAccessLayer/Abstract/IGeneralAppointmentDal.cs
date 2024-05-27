@@ -9,5 +9,12 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface IGeneralAppointmentDal : IGenericDal<GeneralAppointment>
     {
+        public int InsertGeneralAppointment(GeneralAppointment generalAppointment);
+
+        public List<GeneralAppointment> GetByCustomerId(int customerId);
+
+        public List<GeneralAppointment> GetByCompanyId(int companyId);
+
+
     }
 }

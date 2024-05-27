@@ -9,5 +9,9 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface ICustomerCommentDal : IGenericDal<CustomerComment>
     {
+        public float GetAvgRatingByCompanyID(int companyId);
+        public List<CustomerComment> GetCustomerCommentByCustomerId(int customerId);
+
+        public List<CustomerComment> GetCustomerCommentByCompanyId(int companyId);
     }
 }

@@ -9,5 +9,6 @@ namespace randevuburada.BusinessLayer.Abstract
 {
     public interface IMainServiceService:IGenericService<MainService>
     {
+        public string TGetMainServiceName(int id);
     }
 }

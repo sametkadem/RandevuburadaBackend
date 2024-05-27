@@ -32,6 +32,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _mainServiceDal.GetList();
         }
 
+        public string TGetMainServiceName(int id)
+        {
+            return _mainServiceDal.GetMainServiceName(id);
+        }
+
         public void TInsert(MainService t)
         {
             _mainServiceDal.Insert(t);

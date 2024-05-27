@@ -11,6 +11,8 @@ namespace randevuburada.BusinessLayer.Abstract
     {
         public bool TCheckCustomer(int userId);
         public Customer TGetByUserID(int id);
+        public List<object> TGetCustomerFirstNameLastNameAndPhoneNumbers(int customerId);
+        public string TGetCustomerName(int customerId);
 
     }
 }

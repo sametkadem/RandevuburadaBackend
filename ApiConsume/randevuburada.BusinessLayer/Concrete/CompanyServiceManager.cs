@@ -28,6 +28,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _companyServiceDal.GetByCompanyId(companyId);
         }
 
+        public CompanyService TGetByCompanyIdAndServiceId(int companyId, int serviceId)
+        {
+            return _companyServiceDal.GetByCompanyIdAndServiceId(companyId, serviceId);
+        }
+
         public Task<List<CompanyService>> TGetByCompanyIdAsync(int companyId)
         {
             return _companyServiceDal.GetByCompanyIdAsync(companyId);
@@ -51,6 +56,11 @@ namespace randevuburada.BusinessLayer.Concrete
         public void TUpdate(CompanyService t)
         {
             _companyServiceDal.Update(t);
+        }
+
+        public CompanyService TupdateCompanyService(CompanyService companyService)
+        {
+            return _companyServiceDal.updateCompanyService(companyService);
         }
     }
 }

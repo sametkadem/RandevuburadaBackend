@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,11 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         private readonly ICompanyService _companyService;
         private readonly ICompanyStaffService _staffService;
         private readonly ICompanyServiceService _companyServiceService;
-        public CompanyServiceController(IMapper mapper, UserManager<AppUser> userManager, ICompanySubscribeService companySubscribeService, ICompanyService companyService, ICompanyStaffService staffService, ICompanyServiceService companyServiceService)
+        private readonly IGenderService _genderService;
+        private readonly IMainServiceService _mainServiceService;
+        private readonly IServiceIntervalHoursService _serviceIntervalHoursService;
+        public CompanyServiceController(IMapper mapper, UserManager<AppUser> userManager, ICompanySubscribeService companySubscribeService, 
+            ICompanyService companyService, ICompanyStaffService staffService, ICompanyServiceService companyServiceService, IGenderService genderService, IMainServiceService mainServiceService, IServiceIntervalHoursService serviceIntervalHoursService)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -28,11 +33,15 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             _companyService = companyService;
             _staffService = staffService;
             _companyServiceService = companyServiceService;
+            _genderService = genderService;
+            _mainServiceService = mainServiceService;
+            _serviceIntervalHoursService = serviceIntervalHoursService;
         }
 
 
         [HttpPost]
         [Route("company/service/set")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> SetCompanyServiceAsync(CompanyServiceAddDto companyServiceAddDto)
         {
             if (!ModelState.IsValid)
@@ -91,11 +100,31 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("company/service/list")]
-        
         public IActionResult GetCompanyServiceList(int companyId)
         {
+            var company = _companyService.TGetByID(companyId);
+            if (company == null)
+            {
+                var returnNullCompanyData = new
+                {
+                    status = "error",
+                    message = "İşletme bulunamadı!"
+                };
+                return BadRequest(returnNullCompanyData);
+            }
+            var user = _userManager.FindByIdAsync(company.UserId.ToString());
+            if (user == null)
+            {
+                var returnNullUserData = new
+                {
+                    status = "error",
+                    message = "Kullanıcı bulunamadı!"
+                };
+                return BadRequest(returnNullUserData);
+            }
+
+
             var companyServiceList = _companyServiceService.TGetByCompanyId(companyId);
-            Console.WriteLine(companyServiceList);
             if (companyServiceList == null || !companyServiceList.Any())
             {
                 var returnEmptyData = new
@@ -106,10 +135,44 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnEmptyData);
             }
 
+            var objectList = companyServiceList.Select(item =>
+            {
+                var genderName = "Unisex";
+                if (item.GenderId == 1)
+                {
+                    genderName = "Erkek";
+                }
+                else if(item.GenderId == 2)
+                {
+                    genderName = "Kadın";
+                }
+               
+
+                var serviceIntervalHoursTime = _serviceIntervalHoursService.TGetServiceIntervalHour(item.ServiceIntervalHoursId);
+                var mainServiceName = _mainServiceService.TGetMainServiceName(item.MainServiceId);
+                var companyStaff = _staffService.TgetStaffsByArrayInts(item.CompanyStaffIds);
+
+                return new
+                {
+                   item.Id,
+                   item.ServiceIntervalHoursId,
+                   item.CompanyStaffIds,
+                    companyStaff,
+                   item.MainServiceId,
+                   item.ServiceName,
+                   item.ServiceDescription,
+                   item.Price,
+                   item.GenderId,
+                   genderName,
+                   serviceIntervalHoursTime,
+                   mainServiceName
+                };
+            }).ToList();
+
             var successData = new
             {
                 status = "success",
-                data = companyServiceList
+                data = objectList
             };
             return Ok(successData);
         }
@@ -142,6 +205,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("company/service/update")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> UpdateCompanyServiceAsync(CompanyServiceUpdateDto companyServiceUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -181,9 +245,16 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 };
                 return BadRequest(returnData);
             }
-            companyService.UpdatedAt = DateTime.Now;
-
-            _companyServiceService.TUpdate(companyService);
+            var serviceUpdate = _companyServiceService.TupdateCompanyService(companyService);
+            if (serviceUpdate == null)
+            {
+                var returnData = new
+                {
+                    status = "error",
+                    message = "Hizmet güncellenirken bir hata oluştu!"
+                };
+                return BadRequest(returnData);
+            }
 
             var successData = new
             {
@@ -193,8 +264,9 @@ namespace Randevuburada.WebApi.Controller.CompanyController
             return Ok(successData);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("company/service/delete")]
+        [Authorize(Roles = "Company")]
         public IActionResult DeleteCompanyStaff(int id)
         {
             var companyStaff = _companyServiceService.TGetByID(id);

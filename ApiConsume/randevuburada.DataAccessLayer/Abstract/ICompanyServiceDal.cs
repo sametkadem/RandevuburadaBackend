@@ -11,6 +11,9 @@ namespace randevuburada.DataAccessLayer.Abstract
     {
         public List<CompanyService> GetByCompanyId(int companyId);
         public Task<List<CompanyService>> GetByCompanyIdAsync(int companyId);
+        public CompanyService GetByCompanyIdAndServiceId(int companyId, int serviceId);
+
+        public CompanyService updateCompanyService(CompanyService companyService);
 
     }
 

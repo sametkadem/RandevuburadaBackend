@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using randevuburada.DtoLayer.Dtos.ChatDto;
 using randevuburada.EntityLayer.Concrete.ChatConcrete;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
 using randevuburada.EntityLayer.Concrete.Identity;
+using System;
 
 namespace Randevuburada.WebApi.Controller.ChatController
 {
@@ -32,7 +34,7 @@ namespace Randevuburada.WebApi.Controller.ChatController
             _chatStatusService = chatStatusService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("company/chat/message/send")]
         public IActionResult SendMessageByCompany(CustomerChatDto customerChatDto)
         {
@@ -97,6 +99,7 @@ namespace Randevuburada.WebApi.Controller.ChatController
             var message = new Message
             {
                 ChatId = chatId,
+                MessageDate = DateTime.UtcNow,
                 MessageText = customerChatDto.MessageText,
                 IsRead = false,
                 IsSystemMessage = false,
@@ -124,6 +127,7 @@ namespace Randevuburada.WebApi.Controller.ChatController
 
         [HttpGet]
         [Route("company/chat/list")]
+        [Authorize(Roles = "Company")]
         public IActionResult GetChatCompany(int companyId)
         {
             var company = _companyService.TGetByID(companyId);
@@ -152,22 +156,41 @@ namespace Randevuburada.WebApi.Controller.ChatController
                 return NotFound(returnIsValid);
             }
 
-            var customer = _customerService.TGetByID(chats[0].CustomerId);
-
-            foreach (var chat in chats)
+            if(chats.Count == 0)
             {
-                chat.ChatStatus = _chatStatusService.TGetByID(chat.ChatStatusId);
-                chat.Company = company;
-                chat.Customer = customer;
-                chat.Company = _companyService.TGetByID(chat.CompanyId);
+                var returnIsValid = new
+                {
+                    code = 404,
+                    status = "error",
+                    message = "Sohbet bulunamadı!"
+                };
+
+                return NotFound(returnIsValid);
             }
+
+            var objectList = chats.Select(item =>
+            {
+                var chatStatusName = _chatStatusService.TGetChatStatusName(item.ChatStatusId);
+                var customer = _customerService.TGetCustomerFirstNameLastNameAndPhoneNumbers(item.CustomerId);
+                return new
+                {
+                    item.Id,
+                    item.CompanyId,
+                    item.CustomerId,
+                    item.ChatStatusId,
+                    chatStatusName,
+                    customer,
+                    item.ChatStartDate,
+                    item.LastMessageDate,
+                };
+            }).ToList();
 
             var returnSuccess = new
             {
                 code = 200,
                 status = "success",
                 message = "Sohbetler başarıyla getirildi!",
-                data = chats
+                data = objectList
             };
 
             return Ok(returnSuccess);
@@ -228,13 +251,45 @@ namespace Randevuburada.WebApi.Controller.ChatController
             {
                 _chatService.TupdateChatStatus(chatId, 4);
             }
+             
+            var objectList = messages.Select(item =>
+            {
+                var userName = "Sistem";
+                if(item.IsCompanyMessage == true)
+                {
+                    userName = company.CompanyName;
+                }
+                else if(item.IsCustomerMessage == true)
+                {
+                    userName = _customerService.TGetCustomerName(chat.CustomerId);
+                }
+                var messageDateText = item.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss");
+                return new
+                {
+                    chat.CustomerId,
+                    item.Id,
+                    item.ChatId,
+                    item.MessageText,
+                    item.IsRead,
+                    item.IsSystemMessage,
+                    item.IsCustomerMessage,
+                    item.IsCompanyMessage,
+                    item.IsCustomerRead,
+                    item.IsCompanyRead,
+                    item.IsDeleted,
+                    item.MessageDate,
+                    messageDateText,
+                    userName
+                };
+            }).ToList();
 
             var returnSuccess = new
             {
                 code = 200,
                 status = "success",
                 message = "Mesajlar başarıyla getirildi!",
-                data = messages
+                data = objectList,
+        
             };
             return Ok(returnSuccess);
         }

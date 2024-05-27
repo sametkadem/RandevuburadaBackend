@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -14,10 +15,19 @@ var builder = WebApplication.CreateBuilder(args);
 var baseUrl = builder.Configuration.GetValue<string>("BaseUrl");
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultBufferSize = 50000; // Varsayılan tampon boyutu
+        options.JsonSerializerOptions.MaxDepth = 500; // Nesne derinliği limiti
+        options.JsonSerializerOptions.IgnoreNullValues = true; // Null değerleri yok say
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true; // Özellik adlarında büyük-küçük harf duyarlılığını kaldır
+    });
+
+
 builder.Services.AddSwaggerGen();
 
-// DbContext ve di�er servis kay�tlar�
+// DbContext ve di�er servis kay�tlar�
 builder.Services.AddDbContext<Context>();
 builder.Services.AddScoped<ICityDal, EfCityDal>();
 builder.Services.AddScoped<ICityService, CityManager>();
@@ -40,7 +50,7 @@ builder.Services.AddScoped<ICompanyService, CompanyManager>();
 builder.Services.AddScoped<ICompanyPackageDal, EfCompanyPackageDal>();
 builder.Services.AddScoped<ICompanyPackageService, CompanyPackageManager>();
 
-builder.Services.AddScoped<ICompanyBankingDetailsDal,  EfCompanyBankingDetailsDal>();
+builder.Services.AddScoped<ICompanyBankingDetailsDal, EfCompanyBankingDetailsDal>();
 builder.Services.AddScoped<ICompanyBankingDetailsService, CompanyBankingDetailsManager>();
 
 builder.Services.AddScoped<ICompanyTypeDal, EfCompanyTypeDal>();
@@ -88,12 +98,6 @@ builder.Services.AddScoped<ICompanyWorkingHoursService, CompanyWorkingHoursManag
 builder.Services.AddScoped<IPaymentTypeDal, EfPaymentTypeDal>();
 builder.Services.AddScoped<IPaymentTypeService, PaymentTypeManager>();
 
-builder.Services.AddScoped<IAppointmentStatusDal, EfAppointmentStatusDal>();
-builder.Services.AddScoped<IAppointmentStatusService, AppointmentStatusManager>();
-
-builder.Services.AddScoped<ICustomerAppointmentInfoDal, EfCustomerAppointmentInfoDal>();
-builder.Services.AddScoped<ICustomerAppointmentInfoService, CustomerAppointmentInfoManager>();
-
 builder.Services.AddScoped<ICustomerBillingInfoDal, EfCustomerBillingInfoDal>();
 builder.Services.AddScoped<ICustomerBillingInfoService, CustomerBillingInfoManager>();
 
@@ -109,23 +113,51 @@ builder.Services.AddScoped<IMessageService, MessageManager>();
 builder.Services.AddScoped<IChatStatusDal, EfChatStatusDal>();
 builder.Services.AddScoped<IChatStatusService, ChatStatusManager>();
 
+builder.Services.AddScoped<IAppointmentStatusDal, EfAppointmentStatusDal>();
+builder.Services.AddScoped<IAppointmentStatusService, AppointmentStatusManager>();
+
+builder.Services.AddScoped<IGeneralAppointmentDal, EfGeneralAppointmentDal>();
+builder.Services.AddScoped<IGeneralAppointmentService, GeneralAppointmentsManager>();
+
+builder.Services.AddScoped<IAppointmentCompanyInfoDal, EfAppointmentCompanyInfoDal>();
+builder.Services.AddScoped<IAppointmentCompanyInfoService, AppointmentCompanyInfoManager>();
+
+builder.Services.AddScoped<ICustomerAppointmentInfoDal, EfCustomerAppointmentInfoDal>();
+builder.Services.AddScoped<ICustomerAppointmentInfoService, CustomerAppointmentInfoManager>();
+
+builder.Services.AddScoped<IAppointmentInfoDal, EfAppointmentInfoDal>();
+builder.Services.AddScoped<IAppointmentInfoService, AppointmentInfoManager>();
+
+builder.Services.AddScoped<ICustomerCommentDal, EfCustomerCommentDal>();
+builder.Services.AddScoped<ICustomerCommentService, CustomerCommentManager>();
+
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<AppUser, AppRole>()
-    .AddEntityFrameworkStores<Context>();
+    .AddTokenProvider<EmailTokenProvider<AppUser>>("Default").AddEntityFrameworkStores<Context>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthentication(cfg =>
 {
-    opt.RequireHttpsMetadata = true;
-    opt.TokenValidationParameters = new TokenValidationParameters
+    cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = baseUrl,
-        ValidAudience = baseUrl,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("8HERKMitOUjiT2HgoPh/K6BkBZfdrMsbcLDRwurBuOVBpSgm8hdKcMbihDUMFVmUm+skqkAMi8rYGUcNKnOaXi6kmWEk4nq7bLrOMw35X69lMPhxMfXAnr14nC+JNDfBq5IuVE+wty8uEAdDQALzF8fCZkBuyiGI1BQ4wF/dF76y4g4CMG+0x0FdRcDGwji7oQ8Nril9ILMifYHWLmC8nUSN5UhzDubDLpieU/RzZOKEu8IV23dgOyFoCZIKuUXMrGeAntQrKQ++JcGydKNumC7mlppkT968RS9ZPGAuVf/w3D6Jdvz/yu0WYPGEpmt37Cos6BndUhPfUh6/bazb1DuIqdbj4qMZ2/sf646dy9s=\r\n")),
         ValidateIssuerSigningKey = true,
-        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8
+            .GetBytes("this_is_my_dummy_secret_very_very_password")
+            ),
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ClockSkew = TimeSpan.Zero
     };
 });
+
 
 builder.Services.AddCors(opt =>
 {
@@ -147,6 +179,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 */
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -156,7 +189,5 @@ app.UseCors("RandevuburadaApiCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

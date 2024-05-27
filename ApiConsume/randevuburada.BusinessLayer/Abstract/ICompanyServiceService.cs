@@ -11,6 +11,9 @@ namespace randevuburada.BusinessLayer.Abstract
     {
         public List<CompanyService> TGetByCompanyId(int companyId);
         public Task<List<CompanyService>> TGetByCompanyIdAsync(int companyId);
+        public CompanyService TGetByCompanyIdAndServiceId(int companyId, int serviceId);
+
+        public CompanyService TupdateCompanyService(CompanyService companyService);
 
     }
 }

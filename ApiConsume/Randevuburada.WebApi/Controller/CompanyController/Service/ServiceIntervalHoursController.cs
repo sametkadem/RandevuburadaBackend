@@ -37,18 +37,24 @@ namespace Randevuburada.WebApi.Controller.CompanyController.Service
 
             foreach (var interval in intervals)
             {
-                var mainServiceModel = new ServiceIntervalHours
-                {
-                    intervalTime = new TimeOnly(0, interval)
-                };
+                               
                 if (interval == 60)
                 {
-                    mainServiceModel = new ServiceIntervalHours
+                    var mainServiceModel = new ServiceIntervalHours
                     {
                         intervalTime = new TimeOnly(1, 0)
                     };
+                    _serviceIntervalHoursService.TInsert(mainServiceModel);
+
                 }
-                _serviceIntervalHoursService.TInsert(mainServiceModel);
+                else
+                {
+                    var mainServiceModel = new ServiceIntervalHours
+                    {
+                        intervalTime = new TimeOnly(0, interval)
+                    };
+                    _serviceIntervalHoursService.TInsert(mainServiceModel);
+                }
             }
 
             var successResponse = new

@@ -19,9 +19,14 @@ namespace randevuburada.EntityLayer.Concrete.AppointmentConcrete
         public Company Company { get; set; }
         public int CompanyServiceId { get; set; }
         public CompanyService CompanyService { get; set; }
+        public int StaffId { get; set; }
+        public CompanyStaff Staff { get; set; }
         public float Price { get; set; }
         public bool IsComplate { get; set; }
         public bool IsCancel { get; set; }
+        public DateTime AppointmentDateStart { get; set; }
+        public DateTime AppointmentDateEnd { get; set; }
+        public DateTime AppointmentTime { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; }
     }

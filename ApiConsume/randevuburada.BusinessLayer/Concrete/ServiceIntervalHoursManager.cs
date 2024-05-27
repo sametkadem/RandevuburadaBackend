@@ -33,6 +33,11 @@ namespace randevuburada.BusinessLayer.Concrete
             return _serviceIntervalHoursDal.GetList();
         }
 
+        public TimeOnly TGetServiceIntervalHour(int id)
+        {
+            return _serviceIntervalHoursDal.GetServiceIntervalHour(id);
+        }
+
         public void TInsert(ServiceIntervalHours t)
         {
             _serviceIntervalHoursDal.Insert(t);

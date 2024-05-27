@@ -86,5 +86,32 @@ namespace randevuburada.DataAccessLayer.EntityFramework
                 context.SaveChanges();
         }
 
+        public CompanyWorkingHours GetByCompanyIdAndDayId(int companyId, int dayId)
+        {
+            var context = new Context();
+            return context.CompanyWorkingHours.Where(x => x.CompanyId == companyId && x.DayId == dayId).FirstOrDefault();
+        }
+
+        public int updateOrInsertCompanyWorkingHours(CompanyWorkingHours companyWorkingHours)
+        {
+            var context = new Context();
+            var existingRecord = context.CompanyWorkingHours.FirstOrDefault(x => x.CompanyId == companyWorkingHours.CompanyId && x.DayId == companyWorkingHours.DayId);
+
+            if (existingRecord != null)
+            {
+                existingRecord.OpenTime = companyWorkingHours.OpenTime;
+                existingRecord.CloseTime = companyWorkingHours.CloseTime;
+                existingRecord.UpdatedAt = DateTime.Now;
+                context.CompanyWorkingHours.Update(existingRecord);
+                context.SaveChanges();
+                return existingRecord.Id;
+            }
+            else
+            {
+                context.CompanyWorkingHours.Add(companyWorkingHours);
+                context.SaveChanges();
+                return companyWorkingHours.Id;
+            }
+        }
     }
 }

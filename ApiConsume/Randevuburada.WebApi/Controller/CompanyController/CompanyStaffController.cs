@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +20,23 @@ namespace Randevuburada.WebApi.Controller.CompanyController
         private readonly ICompanySubscribeService _companySubscribeService;
         private readonly ICompanyService _companyService;
         private readonly ICompanyStaffService _staffService;
-        public CompanyStaffController(IMapper mapper, UserManager<AppUser> userManager, ICompanySubscribeService companySubscribeService, ICompanyService companyService, ICompanyStaffService staffService)
+        private readonly IStaffWorkingPositionService _staffWorkingPositionService;
+        private readonly IStaffWorkingStatusService _staffWorkingStatusService;
+        public CompanyStaffController(IMapper mapper, UserManager<AppUser> userManager, ICompanySubscribeService companySubscribeService, ICompanyService companyService, ICompanyStaffService staffService, IStaffWorkingPositionService staffWorkingPositionService, IStaffWorkingStatusService staffWorkingStatusService)
         {
             _mapper = mapper;
             _userManager = userManager;
             _companySubscribeService = companySubscribeService;
             _companyService = companyService;
             _staffService = staffService;
+            _staffWorkingPositionService = staffWorkingPositionService;
+            _staffWorkingStatusService = staffWorkingStatusService;           
         }
 
 
         [HttpPost]
         [Route("company/staff/set")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> SetCompanyStaffAsync(CompanyStaffAddDto companyStaffAddDto)
         {
             if (!ModelState.IsValid)
@@ -138,10 +144,33 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnData);
             }
 
+            var objectList = companyStaff.Select(item =>
+            {
+                var workingPositionName = _staffWorkingPositionService.TGetByID(item.StaffWorkingPositionId).PositionName;
+                var workingStatusName = _staffWorkingStatusService.TGetByID(item.StaffWorkingStatusId).StatusName;
+
+                return new
+                {
+                    item.Id,
+                    item.CompanyId,
+                    item.StaffWorkingPositionId,
+                    WorkingPositionName = workingPositionName,
+                    WorkingStatusName = workingStatusName,
+                    item.StaffWorkingStatusId,
+                    item.ProfilPicture,
+                    item.FirstName,
+                    item.LastName,
+                    item.PhoneNumber,
+                    item.Email,
+                    item.Tc,
+                    item.BirthDate
+                };
+            }).ToList();
+
             var successData = new
             {
                 status = "success",
-                data = companyStaff
+                data = objectList
             };
             return Ok(successData);
         }
@@ -173,6 +202,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("company/staff/update")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> UpdateCompanyStaffAsync(CompanyStaffUpdateDto companyStaffUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -204,9 +234,16 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnData);
             }
             companyStaff.UpdatedAt = DateTime.Now;
-
-            _staffService.TUpdate(companyStaff);
-
+            var update = _staffService.TupdateCompanyStaff(companyStaff);
+            if(update == null)
+            {
+                var returnData = new
+                {
+                    status = "error",
+                    message = "Personel bilgileri güncellenirken bir hata oluştu!"
+                };
+                return BadRequest(returnData);
+            }
             var successData = new
             {
                 status = "success",
@@ -217,6 +254,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("company/staff/delete")]
+        [Authorize(Roles = "Company")]
         public IActionResult DeleteCompanyStaff(int id)
         {
             var companyStaff = _staffService.TGetByID(id);

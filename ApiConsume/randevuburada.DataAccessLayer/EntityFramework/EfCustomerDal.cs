@@ -29,6 +29,33 @@ namespace randevuburada.DataAccessLayer.EntityFramework
             var context = new Context();
             return context.Customers.FirstOrDefault(x => x.UserId == userId);
         }
+
+        public List<object> GetCustomerFirstNameLastNameAndPhoneNumbers(int customerId)
+        {
+            using (var context = new Context())
+            {
+                return context.Customers
+                    .Where(c => c.Id == customerId)
+                    .Select(x => new
+                    {
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        PhoneNumber = x.Phone
+                    })
+                    .ToList<object>(); // List'in dönüş tipi object olarak belirtilmiş
+            }
+        }
+
+        public string GetCustomerName(int customerId)
+        {
+            using (var context = new Context())
+            {
+                return context.Customers
+                    .Where(c => c.Id == customerId)
+                    .Select(x => x.FirstName + " " + x.LastName)
+                    .FirstOrDefault();
+            }
+        }
     }
 
 

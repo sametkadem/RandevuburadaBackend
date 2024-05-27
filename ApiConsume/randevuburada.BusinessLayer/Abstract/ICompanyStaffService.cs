@@ -10,5 +10,11 @@ namespace randevuburada.BusinessLayer.Abstract
     public interface ICompanyStaffService:IGenericService<CompanyStaff>
     {
         public List<CompanyStaff> TGetByCompanyId (int companyId);
+
+        public CompanyStaff TupdateCompanyStaff(CompanyStaff companyStaff);
+
+        public List<CompanyStaff> TgetStaffsByArrayInts(List<int> staffIds);
+
+
     }
 }

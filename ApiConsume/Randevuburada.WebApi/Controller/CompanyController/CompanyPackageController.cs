@@ -5,6 +5,7 @@ using randevuburada.DtoLayer.Dtos.CustomerDto;
 using AutoMapper;
 using randevuburada.BusinessLayer.Abstract;
 using randevuburada.EntityLayer.Concrete.CompanyConcrete;
+using Microsoft.AspNetCore.Authorization;
 namespace Randevuburada.WebApi.Controller.CompanyController
 {
     [Route("api/v1/")]
@@ -37,6 +38,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("company/get/package")]
+        [Authorize(Roles = "Company")]
         public IActionResult GetCompanyPackage()
         {
             var companyPackage = _companyPackageService.TGetList();

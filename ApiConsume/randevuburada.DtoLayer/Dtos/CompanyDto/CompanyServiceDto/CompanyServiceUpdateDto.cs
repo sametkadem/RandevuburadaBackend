@@ -29,5 +29,7 @@ namespace randevuburada.DtoLayer.Dtos.CompanyDto.CompanyServiceDto
         [Required(ErrorMessage = "Fiyat alanı gereklidir.")]
         [Range(0, float.MaxValue, ErrorMessage = "Fiyat sıfırdan büyük olmalıdır.")]
         public float Price { get; set; }
+        public int ServiceIntervalHoursId { get; set; }
+        public required int[] CompanyStaffIds { get; set; }
     }
 }

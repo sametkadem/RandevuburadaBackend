@@ -14,5 +14,8 @@ namespace randevuburada.DataAccessLayer.Abstract
         public List<CompanyWorkingHours> GetByCompanyId(int companyId);
         public void DeleteByCompanyId(int companyId);
         public void UpdateByCompanyId(int companyId, CompanyWorkingHoursUpdateDto companyWorkingHours);
+        public CompanyWorkingHours GetByCompanyIdAndDayId(int companyId, int dayId);
+        public int updateOrInsertCompanyWorkingHours(CompanyWorkingHours companyWorkingHours);
+
     }
 }

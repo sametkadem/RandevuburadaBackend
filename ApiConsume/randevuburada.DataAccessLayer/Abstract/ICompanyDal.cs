@@ -13,5 +13,7 @@ namespace randevuburada.DataAccessLayer.Abstract
         public int GetCountCompanyByUserId(int userId);
         public IEnumerable<Company> GetByUserID(int userId);
         public IEnumerable<Company> GetCountryCityDistrictCompany(int countryId, int cityId, int districtId);
+
+        public Company updateCompany(Company company);
     }
 }

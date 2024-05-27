@@ -9,5 +9,6 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface IServiceIntervalHoursDal : IGenericDal<ServiceIntervalHours>
     {
+        public TimeOnly GetServiceIntervalHour(int id);
     }
 }

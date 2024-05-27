@@ -18,6 +18,7 @@ namespace randevuburada.EntityLayer.Concrete.CustomerConcrete
         public int AppoinmentId { get; set; }
         public GeneralAppointment Appoinment { get; set; }
         public bool SystemApproved { get; set; }
+        public float Rating { get; set; }
         public DateTime CommentDate { get; set; }
         public bool HideUserName { get; set; }
         public string Comment { get; set; }

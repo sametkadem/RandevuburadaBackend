@@ -9,5 +9,11 @@ namespace randevuburada.BusinessLayer.Abstract
 {
     public interface IAppointmentInfoService : IGenericService<AppointmentInfo>
     {
+        public List<AppointmentInfo> TGetAppointmentInfoByCompanyAndServiceIdAndDate(int companyId, int serviceId, DateTime date);
+        public List<AppointmentInfo> TGetAppointmentInfoByCompanyAndStaffIdAndDate(int companyId, int staffId, DateTime date);
+
+        public List<AppointmentInfo> TGetAppointmentsByAppointmentId(int appointmentId);
+
+
     }
 }

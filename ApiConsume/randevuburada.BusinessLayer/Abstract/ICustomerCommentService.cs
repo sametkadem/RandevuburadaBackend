@@ -9,5 +9,9 @@ namespace randevuburada.BusinessLayer.Abstract
 {
     public interface ICustomerCommentService : IGenericService<CustomerComment>
     {
+        public float TGetAvgRatingByCompanyID(int companyId);
+        public List<CustomerComment> TGetCustomerCommentByCustomerId(int customerId);
+
+        public List<CustomerComment> TGetCustomerCommentByCompanyId(int companyId);
     }
 }

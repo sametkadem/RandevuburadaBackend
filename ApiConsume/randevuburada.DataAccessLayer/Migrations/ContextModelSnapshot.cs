@@ -191,8 +191,17 @@ namespace randevuburada.DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("AppointmentDateEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("AppointmentDateStart")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("AppointmentId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("AppointmentTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
@@ -215,6 +224,9 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -227,6 +239,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.HasIndex("CompanyServiceId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("StaffId");
 
                     b.ToTable("AppointmentInfo");
                 });
@@ -256,17 +270,29 @@ namespace randevuburada.DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AppointmentDate")
+                    b.Property<DateTime>("AppointmentDateEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("AppointmentDateStart")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("AppointmentStatusId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("AppointmentTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerAppointmentInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerBillingInfoId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -301,6 +327,10 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.HasIndex("AppointmentStatusId");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("CustomerAppointmentInfoId");
+
+                    b.HasIndex("CustomerBillingInfoId");
 
                     b.HasIndex("CustomerId");
 
@@ -435,8 +465,15 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Property<string>("CompanyAbout")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CompanyAdress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CompanyBankingDetailsId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CompanyLogo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -718,6 +755,9 @@ namespace randevuburada.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ServiceIntervalHoursId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -732,6 +772,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.HasIndex("GenderId");
 
                     b.HasIndex("MainServiceId");
+
+                    b.HasIndex("ServiceIntervalHoursId");
 
                     b.ToTable("CompanyServices");
                 });
@@ -1665,7 +1707,7 @@ namespace randevuburada.DataAccessLayer.Migrations
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.AppointmentConcrete.AppointmentInfo", b =>
                 {
                     b.HasOne("randevuburada.EntityLayer.Concrete.AppointmentConcrete.GeneralAppointment", "Appointment")
-                        .WithMany()
+                        .WithMany("AppointmentDetail")
                         .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1688,6 +1730,12 @@ namespace randevuburada.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyStaff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Appointment");
 
                     b.Navigation("Company");
@@ -1695,6 +1743,8 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Navigation("CompanyService");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.AppointmentConcrete.GeneralAppointment", b =>
@@ -1708,6 +1758,18 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CustomerConcrete.CustomerAppointmentInfo", "CustomerAppointmentInfo")
+                        .WithMany()
+                        .HasForeignKey("CustomerAppointmentInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CustomerConcrete.CustomerBillingInfo", "CustomerBillingInfo")
+                        .WithMany()
+                        .HasForeignKey("CustomerBillingInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1728,6 +1790,10 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("CustomerAppointmentInfo");
+
+                    b.Navigation("CustomerBillingInfo");
 
                     b.Navigation("PaymentType");
                 });
@@ -1906,11 +1972,19 @@ namespace randevuburada.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("randevuburada.EntityLayer.Concrete.CompanyConcrete.Service.ServiceIntervalHours", "ServiceIntervalHours")
+                        .WithMany()
+                        .HasForeignKey("ServiceIntervalHoursId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
 
                     b.Navigation("Gender");
 
                     b.Navigation("MainService");
+
+                    b.Navigation("ServiceIntervalHours");
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanySocialMedia", b =>
@@ -2180,6 +2254,11 @@ namespace randevuburada.DataAccessLayer.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("randevuburada.EntityLayer.Concrete.AppointmentConcrete.GeneralAppointment", b =>
+                {
+                    b.Navigation("AppointmentDetail");
                 });
 
             modelBuilder.Entity("randevuburada.EntityLayer.Concrete.CompanyConcrete.CompanyBankingDetails", b =>

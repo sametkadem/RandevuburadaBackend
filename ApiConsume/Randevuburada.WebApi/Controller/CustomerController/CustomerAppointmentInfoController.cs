@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
 
         [HttpPost]
         [Route("customer/appointment/info/set")]
+
         public async Task<IActionResult> CreateAppointmentInfoForCustomerAsync(CustomerAppointmentInfoAddDto customerAppointmentInfoAddDto)
         {
             if (!ModelState.IsValid)
@@ -55,7 +57,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
                 return NotFound(returnCustomerNotFound);
             }
 
-            var user = await _userManager.FindByIdAsync(customer.Id.ToString());
+            var user = await _userManager.FindByIdAsync(customer.UserId.ToString());
             if (user == null)
             {
                 var returnUserNotFound = new
@@ -153,6 +155,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
 
         [HttpGet]
         [Route("customer/appointment/info/get/byId")]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetAppointmentInfoForById(int id)
         {
             var customerAppointmentInfo = _customerAppointmentInfoService.TGetByID(id);
@@ -180,6 +183,7 @@ namespace Randevuburada.WebApi.Controller.CustomerController
 
         [HttpGet]
         [Route("customer/appointment/info/list/byCustomerId")]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetAppointmentInfoForByCustomerId(int customerId)
         {
             var customer = _customerService.TGetByID(customerId);
@@ -233,9 +237,8 @@ namespace Randevuburada.WebApi.Controller.CustomerController
             return Ok(returnSuccess);
         }
 
-
+        [Authorize(Roles = "Customer")]
         [HttpGet]
-        [Route("customer/appointment/info/list/byUserId")]
         public IActionResult GetAppointmentInfoForByUserId(int userId)
         {
             var user = _userManager.FindByIdAsync(userId.ToString());

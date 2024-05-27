@@ -16,5 +16,11 @@ namespace randevuburada.DataAccessLayer.EntityFramework
         {
 
         }
+
+        public string GetChatStatusName(int chatStatusId)
+        {
+            var context = new Context();
+            return context.ChatStatus.FirstOrDefault(x => x.Id == chatStatusId).Status;
+        }
     }
 }

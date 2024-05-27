@@ -49,5 +49,34 @@ namespace randevuburada.DataAccessLayer.EntityFramework
                 .Where(x => x.CountryId == countryId && x.CityId == cityId && x.DistrictId == districtId)
                 .ToList();
         }
+
+        public Company updateCompany(Company company)
+        {
+            var context = new Context();
+            var findCompany = context.Companies.Find(company.Id);
+            findCompany.CompanyName = company.CompanyName;
+            findCompany.PhoneNumber = company.PhoneNumber;
+            findCompany.Email = company.Email;
+            findCompany.CompanyAdress = company.CompanyAdress;
+            findCompany.CountryId = company.CountryId;
+            findCompany.CityId = company.CityId;
+            findCompany.DistrictId = company.DistrictId;
+            findCompany.CompanyLogo = company.CompanyLogo;
+            findCompany.CompanyVisibility = company.CompanyVisibility;
+            findCompany.CompanyStatus = company.CompanyStatus;
+            findCompany.CompanyAbout = company.CompanyAbout;
+            findCompany.CompanyBankingDetailsId = company.CompanyBankingDetailsId;
+            findCompany.Website = company.Website;
+            findCompany.Latitude = company.Latitude;
+            findCompany.Longitude = company.Longitude;
+            findCompany.UserId = company.UserId;
+            findCompany.UpdatedAt = DateTime.Now;
+            findCompany.CompanyTypeId = company.CompanyTypeId;
+            
+            var updatedEntity = context.Entry(findCompany);
+            updatedEntity.State = EntityState.Modified;
+            context.SaveChanges();
+            return findCompany;
+        }
     }
 }

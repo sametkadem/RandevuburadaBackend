@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("company/workingHours/set")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> SetCompanyWorkingHoursAsync(CompanyWorkingHoursAddDto companyWorkingHoursAddDto)
         {
             if (!ModelState.IsValid)
@@ -81,59 +83,29 @@ namespace Randevuburada.WebApi.Controller.CompanyController
                 return BadRequest(returnNullUserSubscribeData);
             }
 
-            foreach(var dayId in companyWorkingHoursAddDto.DayIds)
+            foreach (var workingDay in companyWorkingHoursAddDto.CompanyWorkingHours)
             {
-                var day = _dayService.TGetByID(dayId);
-                if (day == null)
-                {
-                    var returnNullDayData = new
-                    {
-                        status = "error",
-                        message = "Gün Bulunamadı!, Gün id: " + dayId
-                    };
-                    return BadRequest(returnNullDayData);
-                }
-            }
-
-            var control = _companyWorkingHoursService.THasCompanyWorkingHours(companyWorkingHoursAddDto.CompanyId, companyWorkingHoursAddDto.DayIds);
-            if (control != null && control.Any())
-            {
-                var controlResultDays = new List<Dictionary<string, string>>();
-
-                foreach (var item in control)
-                {
-                    var day = _dayService.TGetByID(item);
-                    var dayAdd = new Dictionary<string, string>
-                    {
-                        { "dayName", day.DayName },
-                        { "dayId", day.Id.ToString() }
-                    };
-                    controlResultDays.Add(dayAdd);
-                }
-
-                var returnData = new
-                {
-                    status = "error",
-                    message = "İşletmenin ilgili günler için çalışma saatleri zaten tanımlı!",
-                    data = controlResultDays
-                };
-
-                return BadRequest(returnData);
-            }
-
-            foreach (var dayId in companyWorkingHoursAddDto.DayIds)
-            {
-                var newCompanyWorkingHours = new CompanyWorkingHours
+                var workingDayData = new CompanyWorkingHours
                 {
                     CompanyId = companyWorkingHoursAddDto.CompanyId,
-                    DayId = dayId,
-                    OpenTime = new TimeOnly(companyWorkingHoursAddDto.OpenTime.Hour, companyWorkingHoursAddDto.OpenTime.Minute),
-                    CloseTime = new TimeOnly(companyWorkingHoursAddDto.CloseTime.Hour, companyWorkingHoursAddDto.CloseTime.Minute),
+                    DayId = workingDay.DayId,
+                    OpenTime = TimeOnly.Parse(workingDay.StartTime),
+                    CloseTime = TimeOnly.Parse(workingDay.EndTime),
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 };
 
-                _companyWorkingHoursService.TInsert(newCompanyWorkingHours);
+                var insertOrUpdate = _companyWorkingHoursService.TupdateOrInsertCompanyWorkingHours(workingDayData);
+                if(insertOrUpdate == null)
+                {
+                    var returnError = new
+                    {
+                        status = "error",
+                        message = "İşletme çalışma saati bilgileri eklenirken bir hata oluştu."
+                    };
+                    return BadRequest(returnError);
+                }
+
             }
 
             var returnSuccess = new
@@ -232,6 +204,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("company/workingHours/update")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> UpdateCompanyWorkingHoursAsync(CompanyWorkingHoursUpdateDto companyWorkingHoursUpdate)
         {
             if (!ModelState.IsValid)

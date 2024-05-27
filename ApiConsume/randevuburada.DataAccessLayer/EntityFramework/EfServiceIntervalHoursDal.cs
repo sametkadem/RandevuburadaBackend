@@ -16,5 +16,13 @@ namespace randevuburada.DataAccessLayer.EntityFramework
         {
 
         }
+
+        public TimeOnly GetServiceIntervalHour(int id)
+        {
+            using (var context = new Context())
+            {
+                return context.ServiceIntervalHours.Where(x => x.Id == id).Select(x => x.intervalTime).FirstOrDefault();
+            }
+        }
     }
 }

@@ -23,9 +23,24 @@ namespace randevuburada.BusinessLayer.Concrete
             _customerCommentDal.Delete(t);
         }
 
+        public float TGetAvgRatingByCompanyID(int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public CustomerComment TGetByID(int id)
         {
             return _customerCommentDal.GetByID(id);
+        }
+
+        public List<CustomerComment> TGetCustomerCommentByCompanyId(int companyId)
+        {
+            return _customerCommentDal.GetCustomerCommentByCompanyId(companyId);
+        }
+
+        public List<CustomerComment> TGetCustomerCommentByCustomerId(int customerId)
+        {
+            return _customerCommentDal.GetCustomerCommentByCustomerId(customerId);
         }
 
         public List<CustomerComment> TGetList()

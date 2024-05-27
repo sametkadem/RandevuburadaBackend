@@ -9,5 +9,6 @@ namespace randevuburada.DataAccessLayer.Abstract
 {
     public interface IChatStatusDal : IGenericDal<ChatStatus>
     {
+        public string GetChatStatusName(int chatStatusId);
     }
 }

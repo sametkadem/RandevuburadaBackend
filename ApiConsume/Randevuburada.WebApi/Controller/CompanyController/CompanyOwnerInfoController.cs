@@ -30,6 +30,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("ownerInfo/set")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> SetCompanyOwnerInfo(CompanyOwnerInfoAddDto companyOwnerInfoAddDto)
         {
             if (!ModelState.IsValid)
@@ -75,6 +76,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpPost]
         [Route("ownerInfo/update")]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> UpdateCompanyOwnerInfo(CompanyOwnerInfoUpdateDto companyOwnerInfoUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -119,6 +121,7 @@ namespace Randevuburada.WebApi.Controller.CompanyController
 
         [HttpGet]
         [Route("ownerInfo/get/byUserId")]
+        [Authorize(Roles = "Company")]
         public IActionResult GetCompanySubscribe(int userId)
         {
             var companyOwnerInfo = _companyOwnerInfoService.TGetByUserID(userId);

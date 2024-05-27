@@ -30,7 +30,7 @@ namespace Randevuburada.WebApi.Controller.Customer
 
         [HttpPost]
         [Route("info/set")]
-        [Authorize]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> AddCustomer(CustomerAddDto customerAddDto)
         {
             if (!ModelState.IsValid)
@@ -61,7 +61,7 @@ namespace Randevuburada.WebApi.Controller.Customer
 
         [HttpPost]
         [Route("info/update")]
-        [Authorize]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> UpdateCustomer(CustomerUpdateDto customerUpdateDto)
         {
             if (!ModelState.IsValid)
@@ -116,7 +116,7 @@ namespace Randevuburada.WebApi.Controller.Customer
 
         [HttpGet]
         [Route("info/get/byUserId")]
-        [Authorize]
+        [Authorize(Roles = "Customer")]
         public IActionResult GetCustomer(int userId)
         {
             var customer = _customerService.TGetByUserID(userId);

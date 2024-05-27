@@ -14,5 +14,7 @@ namespace randevuburada.BusinessLayer.Abstract
         public IEnumerable<Company> TGetByUserID(int userId);
 
         public IEnumerable<Company> TGetCountryCityDistrictCompany(int countryId, int cityId, int districtId);
+
+        public Company TupdateCompany(Company company);
     }
 }
